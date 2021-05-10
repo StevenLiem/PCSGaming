@@ -11,20 +11,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace PCS_Gaming
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginWindow : Window
     {
-        public static string dataSource, user, pass;
-        public MainWindow()
+        OracleConnection conn;
+        public LoginWindow(OracleConnection conn)
         {
             InitializeComponent();
+
+            this.conn = conn;
         }
 
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
@@ -57,23 +58,16 @@ namespace PCS_Gaming
 
         private void ButtonLogin_Click(object sender, RoutedEventArgs e)
         {
-            dataSource = TBDS.Text;
-            user = TBUser.Text;
-            pass = TBPass.Password;
-            var connectionString = "Data Source = " + dataSource + "; User ID=" + user + "; Password=" + pass;
-            OracleConnection conn = new OracleConnection(connectionString);
-            try
+            if (!string.IsNullOrEmpty(TBUser.Text) && !string.IsNullOrEmpty(TBPass.Password))
             {
-                conn.Open();
-                conn.Close();
-                HomeWindow home = new HomeWindow(conn);
-                this.Hide();
-                home.ShowDialog();
-            }
-            catch (OracleException ex)
-            {
-                MessageBox.Show(ex.Message);
-                conn.Close();
+                string user = TBUser.Text;
+                string pass = TBPass.Password;
+
+                if (user.Equals("admin") && pass.Equals("admin"))
+                {
+                    AdminNavigation admin = new AdminNavigation(conn);
+                    admin.ShowDialog();
+                }
             }
         }
     }

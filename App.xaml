@@ -11,6 +11,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!--Color yang dipakai ditaruh disini biar lebih gampang dipake & diatur-->
+            <SolidColorBrush x:Key="kindaBlack" Color="#16181E"/>
+            <SolidColorBrush x:Key="blueishBlack" Color="#20202C"/>
+            <SolidColorBrush x:Key="bootstrapDark" Color="#272b30"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

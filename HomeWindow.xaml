@@ -4,9 +4,154 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PCS_Gaming"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="HomeWindow" Height="450" Width="800">
+        Title="HomeWindow" Height="720" Width="1280"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Background="{StaticResource bootstrapDark}" 
+        WindowStartupLocation="CenterScreen">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--buat custom window button-->
+        <Grid Background="{StaticResource kindaBlack}"
+              Grid.ColumnSpan="2"
+              MouseDown="Grid_MouseDown">
+            <StackPanel
+                Panel.ZIndex="1"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Margin="8">
+                <Button
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Width="25"
+                    Height="25"
+                    Margin="5 0"
+                    Name="minimizeButton"
+                    Click="minimizeButton_Click">
+                    <materialDesign:PackIcon 
+                        Kind="WindowMinimize"
+                        Height="20"
+                        Width="20"/>
+                </Button>
+                <Button
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Width="25"
+                    Height="25"
+                    Margin="5 0"
+                    Name="maximizeButton"
+                    Click="maximizeButton_Click">
+                    <materialDesign:PackIcon 
+                        Kind="WindowMaximize"
+                        Height="20"
+                        Width="20"/>
+                </Button>
+                <Button
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Width="25"
+                    Height="25"
+                    Margin="5 0"
+                    Name="closeButton"
+                    Click="closeButton_Click">
+                    <materialDesign:PackIcon 
+                        Kind="WindowClose"
+                        Height="20"
+                        Width="20"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <!--End buat custom window button-->
+
+        <!--bagian logo (kalo ada)-->
+        <Grid Grid.Row="1" Background="HotPink">
+            <TextBlock Text="Logo" Foreground="White" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+        <!--End bagian logo (kalo ada)-->
+
+        <!--bagian atas-->
+        <Grid Grid.Row="1" 
+              Grid.Column="1" 
+              Background="{StaticResource blueishBlack}">
+
+            <!--bagian search box-->
+            <Grid 
+                Background="{StaticResource bootstrapDark}"
+                HorizontalAlignment="Right"
+                Height="40"
+                Width="300"
+                Margin="0 0 200 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:PackIcon 
+                    Grid.Column="0" 
+                    Kind="Search"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Foreground="White"/>
+                <TextBox 
+                    Grid.Column="1"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Search Game"/>
+            </Grid>
+            <!--End bagian search box-->
+
+            <!--bagian nama member-->
+            <StackPanel 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Center"
+                Margin="20 0"
+                Width="160">
+                <TextBlock 
+                    x:Name="TBlMember" 
+                    Text="Guest"
+                    FontSize="14"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    MouseDown="TBlMember_MouseDown">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            <!--End bagian nama member-->
+            
+        </Grid>
+        <!--End bagian atas-->
         
+        <!--bagian samping-->
+        <Grid Grid.Row="2" 
+              Grid.Column="0" 
+              Background="{StaticResource blueishBlack}">
+
+        </Grid>
+        <!--End bagian samping-->
+
+        <!--bagian utama (tengah)-->
+        <Grid Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}">
+
+        </Grid>
+        <!--End bagian utama (tengah)-->
     </Grid>
 </Window>

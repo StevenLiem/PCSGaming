@@ -11,20 +11,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace PCS_Gaming
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AdminNavigation.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AdminNavigation : Window
     {
-        public static string dataSource, user, pass;
-        public MainWindow()
+        OracleConnection conn;
+        public AdminNavigation(OracleConnection conn)
         {
             InitializeComponent();
+
+            this.conn = conn;
         }
 
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
@@ -55,26 +56,10 @@ namespace PCS_Gaming
                 DragMove();
         }
 
-        private void ButtonLogin_Click(object sender, RoutedEventArgs e)
+        private void ButtonMasterGame_Click(object sender, RoutedEventArgs e)
         {
-            dataSource = TBDS.Text;
-            user = TBUser.Text;
-            pass = TBPass.Password;
-            var connectionString = "Data Source = " + dataSource + "; User ID=" + user + "; Password=" + pass;
-            OracleConnection conn = new OracleConnection(connectionString);
-            try
-            {
-                conn.Open();
-                conn.Close();
-                HomeWindow home = new HomeWindow(conn);
-                this.Hide();
-                home.ShowDialog();
-            }
-            catch (OracleException ex)
-            {
-                MessageBox.Show(ex.Message);
-                conn.Close();
-            }
+            MasterGame mGame = new MasterGame(conn);
+            mGame.ShowDialog();
         }
     }
 }
