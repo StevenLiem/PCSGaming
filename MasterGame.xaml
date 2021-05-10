@@ -135,15 +135,21 @@
                         <ComboBox
                             x:Name="CBDeveloper"
                             materialDesign:HintAssist.Hint="Select Developer"
+                            
                             Width="300"
                             FontSize="16"
                             Foreground="White"
                             BorderBrush="White"
-                            Background="{StaticResource bootstrapDark}">
+                            Background="{StaticResource bootstrapDark}"
+                            >
+
+                            
+                            
                             <ComboBox.ItemContainerStyle>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
-                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource bootstrapDark}"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
                                 </Style>
                             </ComboBox.ItemContainerStyle>
                         </ComboBox>
@@ -226,6 +232,7 @@
                             BorderBrush="White"
                             materialDesign:HintAssist.Hint=" >= 0"/>
                     </StackPanel>
+                    
                 </StackPanel>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="450">
                     <Button
@@ -254,6 +261,32 @@
                         Content="Delete"
                         IsEnabled="False"
                         ToolTip="Delete selected game" Click="ButtonDelete_Click"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label 
+                            Content="Is Active"
+                            Foreground="White"
+                            FontSize="16"
+                            Width="80"
+                            Margin="0 10"/>
+                        <RadioButton
+                            x:Name="rbActive"
+                            Content="Active"
+                            Foreground="White"
+                            FontSize="16"
+                            VerticalAlignment="Center"
+                            Width="100"
+                        />
+                        <RadioButton
+                            x:Name="rbInactive"
+                            Content="Inactive"
+                            Foreground="White"
+                            FontSize="16"
+                            VerticalAlignment="Center"
+                            Width="100"
+                        />
+
+                    </StackPanel>
                 </StackPanel>
                 
             </StackPanel>

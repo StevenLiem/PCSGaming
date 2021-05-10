@@ -80,7 +80,7 @@ namespace PCS_Gaming
                     $"(select NAME from DEVELOPER where DEVELOPER_ID=g.DEVELOPER_ID) as \"Developer\", " +
                     $"(select NAME from PUBLISHER where PUBLISHER_ID=g.PUBLISHER_ID) as \"Publisher\", " +
                     $"(select NAME from GENRE where GENRE_ID=g.GENRE_ID) as \"Genre\", " +
-                    $"PRICE as \"Price\", STOCK as \"Stock\" from GAME g";
+                    $"PRICE as \"Price\", STOCK as \"Stock\", IS_ACTIVE_GAME as \"Is Active\" from GAME g";
 
             conn.Open();
             OracleDataAdapter da = new OracleDataAdapter(query, conn);
@@ -225,11 +225,17 @@ namespace PCS_Gaming
             if (valid)
             {
                 conn.Open();
+                int active = 0;
+                if (rbActive.IsChecked == true)
+                {
+                    active = 1;
+                }
                 string query = $"update GAME set NAME='{TBTitle.Text}', " +
                                $"PRICE={TBPrice.Text}, STOCK={TBStock.Text}, " +
                                $"DEVELOPER_ID='{devID[CBDeveloper.SelectedIndex]}', " +
                                $"PUBLISHER_ID='{pubID[CBPublisher.SelectedIndex]}', " +
-                               $"GENRE_ID='{genID[CBGenre.SelectedIndex]}' where GAME_ID='{selectedID}'";
+                               $"GENRE_ID='{genID[CBGenre.SelectedIndex]}', "+
+                               $"IS_ACTIVE_GAME={active} where GAME_ID='{selectedID}'";
                 OracleCommand cmd = new OracleCommand(query, conn);
                 try
                 {
@@ -319,6 +325,17 @@ namespace PCS_Gaming
                 TBStock.Text = row["Stock"].ToString();
                 selectedStock = Int32.Parse(row["Stock"].ToString());
                 TBIDGame.Text = selectedID;
+
+                if(row["Is Active"].ToString() == "1")
+                {
+                    rbActive.IsChecked = true;
+                    rbInactive.IsChecked = false;
+                }
+                else
+                {
+                    rbActive.IsChecked = false;
+                    rbInactive.IsChecked = true;
+                }
             }
 
             ButtonClear.Content = "Cancel";
@@ -341,6 +358,8 @@ namespace PCS_Gaming
             ButtonInsert.IsEnabled = true;
             ButtonUpdate.IsEnabled = false;
             ButtonDelete.IsEnabled = false;
+            rbActive.IsChecked = false;
+            rbInactive.IsChecked = false;
         }
 
         private void ButtonInsert_Click(object sender, RoutedEventArgs e)
@@ -350,8 +369,8 @@ namespace PCS_Gaming
             if (valid)
             {
                 conn.Open();
-                query = "insert into GAME(GAME_ID, DEVELOPER_ID, PUBLISHER_ID, GENRE_ID, NAME, RELEASE_DATE, PRICE, STOCK) " +
-                        "values(:ID,:DEVELOPER,:PUBLISHER,:GENRE,:TITLE,CURRENT_DATE,:PRICE,:STOCK)";
+                query = "insert into GAME(GAME_ID, DEVELOPER_ID, PUBLISHER_ID, GENRE_ID, NAME, RELEASE_DATE, PRICE, STOCK, IS_ACTIVE_GAME) " +
+                        "values(:ID,:DEVELOPER,:PUBLISHER,:GENRE,:TITLE,CURRENT_DATE,:PRICE,:STOCK,:IS_ACTIVE)";
                 OracleCommand cmd = new OracleCommand(query, conn);
                 try
                 {
@@ -362,6 +381,14 @@ namespace PCS_Gaming
                     cmd.Parameters.Add(":TITLE", TBTitle.Text);
                     cmd.Parameters.Add(":PRICE", Int32.Parse(TBPrice.Text));
                     cmd.Parameters.Add(":STOCK", Int32.Parse(TBStock.Text));
+                    if (rbActive.IsChecked==true)
+                    {
+                        cmd.Parameters.Add(":IS_ACTIVE", 1);
+                    }
+                    else
+                    {
+                        cmd.Parameters.Add(":IS_ACTIVE", 0);
+                    }
 
                     cmd.ExecuteNonQuery();
                 }
