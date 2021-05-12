@@ -26,6 +26,7 @@ namespace PCS_Gaming
             InitializeComponent();
 
             this.conn = conn;
+            generateview();
         }
 
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
@@ -60,6 +61,49 @@ namespace PCS_Gaming
         {
             LoginWindow login = new LoginWindow(conn);
             login.ShowDialog();
+        }
+
+        private void generateview()
+        {
+            sptop.Children.Add(generategame("heya"));
+            sptop.Children.Add(generategame("entoet"));
+
+        }
+
+        private Border generategame(string namagame)
+        {
+            Border b = new Border();
+            b.BorderBrush = new SolidColorBrush(Color.FromRgb(81, 45, 168));
+            b.BorderThickness = new Thickness(3);
+            b.CornerRadius = new CornerRadius(15);
+            b.Margin = new Thickness(2.5, 0, 2.5, 0);
+
+            Grid g = new Grid();
+            g.Width = 160;
+            g.Height = 188;
+            //Buat Gambar
+            RowDefinition r = new RowDefinition();
+            r.Height = new GridLength(6, GridUnitType.Star);
+            g.RowDefinitions.Add(r);
+            //Buat Judul
+            r = new RowDefinition();
+            r.Height = new GridLength(4, GridUnitType.Star);
+            g.RowDefinitions.Add(r);
+            //Mbuat Text
+            TextBlock t = new TextBlock();
+            t.Text = namagame;
+            t.FontSize = 16;
+            t.VerticalAlignment = VerticalAlignment.Center;
+            t.HorizontalAlignment = HorizontalAlignment.Center;
+            t.Foreground = new SolidColorBrush(Colors.White);
+            t.FontWeight = FontWeights.Bold;
+            Grid.SetRow(t, 1);
+            Grid.SetColumn(t, 0);
+            g.Children.Add(t);
+            
+            b.Child = g;
+            
+            return b;
         }
     }
 }

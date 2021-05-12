@@ -136,10 +136,10 @@
                 </TextBlock>
             </StackPanel>
             <!--End bagian nama member-->
-            
+
         </Grid>
         <!--End bagian atas-->
-        
+
         <!--bagian samping-->
         <Grid Grid.Row="2" 
               Grid.Column="0" 
@@ -149,7 +149,39 @@
         <!--End bagian samping-->
 
         <!--bagian utama (tengah)-->
-        <Grid Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}">
+        <Grid Name="greta" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="4*" />
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="24" FontWeight="Bold" Grid.Row="0" Grid.Column="0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform X="25"/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>Top Sellers</TextBlock>
+            <TextBlock FontSize="24" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform X="25"/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>Newest Games</TextBlock>
+            <ScrollViewer HorizontalAlignment="Left" Height="220" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="1180" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <StackPanel Name="sptop" Orientation="Horizontal" Height="188" Width="1168">
+                </StackPanel>
+            </ScrollViewer>
+            <ScrollViewer HorizontalAlignment="Left" Height="220" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="1180" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <StackPanel Name="spbot" Orientation="Horizontal" Height="188" Width="1168">
+                </StackPanel>
+            </ScrollViewer>
 
         </Grid>
         <!--End bagian utama (tengah)-->
