@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data;
 
 namespace PCS_Gaming
 {
@@ -65,12 +66,19 @@ namespace PCS_Gaming
 
         private void generateview()
         {
-            sptop.Children.Add(generategame("heya"));
-            sptop.Children.Add(generategame("entoet"));
-
+            OracleDataAdapter da = new OracleDataAdapter("SELECT GAME_ID,NAME FROM GAME WHERE IS_ACTIVE_GAME = 1 ORDER BY RELEASE_DATE DESC", conn);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            //for untuk ngeluarin berapa game
+            spbot.Width = 0;
+            for (int i = 0; i < 7; i++)
+            {
+                spbot.Width = spbot.Width + 172;
+                spbot.Children.Add(generategame(dt.Rows[i][1].ToString(), dt.Rows[i][0].ToString()));
+            }
         }
 
-        private Border generategame(string namagame)
+        private Border generategame(string namagame,string kode)
         {
             Border b = new Border();
             b.BorderBrush = new SolidColorBrush(Color.FromRgb(81, 45, 168));
@@ -90,20 +98,31 @@ namespace PCS_Gaming
             r.Height = new GridLength(4, GridUnitType.Star);
             g.RowDefinitions.Add(r);
             //Mbuat Text
-            TextBlock t = new TextBlock();
-            t.Text = namagame;
+            Label t = new Label();
+            t.Content = namagame;
             t.FontSize = 16;
             t.VerticalAlignment = VerticalAlignment.Center;
+            t.HorizontalContentAlignment = HorizontalAlignment.Center;
             t.HorizontalAlignment = HorizontalAlignment.Center;
             t.Foreground = new SolidColorBrush(Colors.White);
             t.FontWeight = FontWeights.Bold;
+            
             Grid.SetRow(t, 1);
             Grid.SetColumn(t, 0);
             g.Children.Add(t);
-            
+            g.Name = kode;
+            g.MouseDown += leftclick;
+            g.Background = new SolidColorBrush(Color.FromArgb(0,0,0,0));
+
             b.Child = g;
             
             return b;
+        }
+
+        private void leftclick(object sender, MouseButtonEventArgs e)
+        {
+            String kode = ((Grid)sender).Name;
+            MessageBox.Show(kode);
         }
     }
 }

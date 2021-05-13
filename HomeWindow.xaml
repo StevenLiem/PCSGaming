@@ -165,7 +165,7 @@
                         <TranslateTransform X="25"/>
                     </TransformGroup>
                 </TextBlock.RenderTransform>Top Sellers</TextBlock>
-            <TextBlock FontSize="24" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <TextBlock FontSize="24" FontWeight="Bold" Grid.Row="2" Grid.Column="0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Text="Newest Release">
                 <TextBlock.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -173,9 +173,9 @@
                         <RotateTransform/>
                         <TranslateTransform X="25"/>
                     </TransformGroup>
-                </TextBlock.RenderTransform>Newest Games</TextBlock>
+                </TextBlock.RenderTransform></TextBlock>
             <ScrollViewer HorizontalAlignment="Left" Height="220" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="1180" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <StackPanel Name="sptop" Orientation="Horizontal" Height="188" Width="1168">
+                <StackPanel Name="sptop" Orientation="Horizontal" Height="188" Width="1170">
                 </StackPanel>
             </ScrollViewer>
             <ScrollViewer HorizontalAlignment="Left" Height="220" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="1180" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled">

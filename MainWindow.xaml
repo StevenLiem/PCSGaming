@@ -15,7 +15,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <!--buat custom window button-->
         <Grid Background="#16181E"
               MouseDown="Grid_MouseDown">
@@ -64,7 +64,7 @@
             </StackPanel>
         </Grid>
         <!--End buat custom window button-->
-        
+
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
             <StackPanel Margin="50 10 50 5">
                 <TextBox x:Name="TBDS"
