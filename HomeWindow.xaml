@@ -83,7 +83,18 @@
         <Grid Grid.Row="1" 
               Grid.Column="1" 
               Background="{StaticResource blueishBlack}">
-
+            
+            <!--bagian button home-->
+            <Grid 
+                Name="btnHome"
+                HorizontalAlignment="Left"
+                Height="40"
+                Width="100"
+                Margin="10 0" MouseLeftButtonDown="BtnHome_MouseLeftButtonDown">
+                <TextBlock Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Home"/>
+            </Grid>
+            <!--end bagian button home-->
+            
             <!--bagian search box-->
             <Grid 
                 Background="{StaticResource bootstrapDark}"
@@ -149,7 +160,7 @@
         <!--End bagian samping-->
 
         <!--bagian utama (tengah)-->
-        <Grid Name="greta" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}">
+        <Grid Name="greta" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="4*"/>
@@ -185,5 +196,122 @@
 
         </Grid>
         <!--End bagian utama (tengah)-->
+        
+        <!--bagian utama detail (tengah)-->
+        <Grid Name="gretb" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Title:
+                </TextBlock>
+                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Developer:
+                </TextBlock>
+                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Publisher:
+                </TextBlock>
+                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Release Date:
+                </TextBlock>
+                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Price:
+                </TextBlock>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1">
+                <TextBlock Name="lblTitleGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Title here
+                </TextBlock>
+                <TextBlock Name="lblDevGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Developer here
+                </TextBlock>
+                <TextBlock Name="lblPubGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Publisher here
+                </TextBlock>
+                <TextBlock Name="lblDateGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Release Date here
+                </TextBlock>
+                <TextBlock Name="lblPriceGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Price here
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <!--end bagian utama detail (tengah)-->
+        
+        
     </Grid>
 </Window>

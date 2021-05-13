@@ -122,7 +122,46 @@ namespace PCS_Gaming
         private void leftclick(object sender, MouseButtonEventArgs e)
         {
             String kode = ((Grid)sender).Name;
+            
             MessageBox.Show(kode);
+            string commandText = "select g.name, d.name, p.name, to_char(g.release_date, 'DD MONTH YYYY'), to_char(g.price,'999,999,999.99') from game g, developer d, publisher p where g.game_id=:a and g.developer_id = d.developer_id and g.publisher_id = p.publisher_id";
+            OracleCommand cmd = new OracleCommand(commandText,conn);
+            cmd.Parameters.Add(":a", kode);
+            conn.Open();
+            OracleDataReader rd = cmd.ExecuteReader();
+            
+            try
+            {
+                
+                while (rd.Read())
+                {
+                    lblTitleGame.Text = rd.GetString(0);
+                    lblDevGame.Text = rd.GetString(1);
+                    lblPubGame.Text = rd.GetString(2);
+                    lblDateGame.Text = rd.GetString(3);
+                    lblPriceGame.Text = "Rp "+rd.GetString(4);
+                }
+                conn.Close();
+                rd.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+                rd.Close();
+            }
+
+            gretb.Visibility = Visibility.Visible;
+            greta.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnHome_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (greta.Visibility == Visibility.Hidden)
+            {
+                greta.Visibility = Visibility.Visible;
+                gretb.Visibility = Visibility.Hidden;
+            }
         }
     }
 }
