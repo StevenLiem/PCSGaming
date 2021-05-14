@@ -19,7 +19,6 @@ create table GAME(
     RELEASE_DATE date,
 	PRICE number,
 	STOCK number,
-	IMAGE_PATH varchar2(100),
 	IS_ACTIVE_GAME number(1)
 );
 --active games has IS_ACTIVE_GAME valued 1, inactive games valued 0
