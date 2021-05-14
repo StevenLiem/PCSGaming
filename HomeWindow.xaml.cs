@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
+using System.IO;
 
 namespace PCS_Gaming
 {
@@ -110,6 +111,20 @@ namespace PCS_Gaming
             r = new RowDefinition();
             r.Height = new GridLength(4, GridUnitType.Star);
             g.RowDefinitions.Add(r);
+            //Buat Gambar
+            Image i = new Image();
+            try
+            {
+                i.Source = new BitmapImage(new Uri(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\" + kode + ".png"));
+            }
+            catch (FileNotFoundException f)
+            {
+                i.Source = null;
+            }
+            Grid.SetRow(i, 0);
+            Grid.SetColumn(i, 0);
+
+
             //Mbuat Text
             Label t = new Label();
             t.Content = namagame;
@@ -119,9 +134,10 @@ namespace PCS_Gaming
             t.HorizontalAlignment = HorizontalAlignment.Center;
             t.Foreground = new SolidColorBrush(Colors.White);
             t.FontWeight = FontWeights.Bold;
-            
             Grid.SetRow(t, 1);
             Grid.SetColumn(t, 0);
+
+            g.Children.Add(i);
             g.Children.Add(t);
             g.Name = kode;
             g.MouseDown += leftclick;

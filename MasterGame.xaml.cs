@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace PCS_Gaming
 {
@@ -27,6 +28,7 @@ namespace PCS_Gaming
         List<string> devID, pubID, genID;
         string query, selectedID;
         int selectedStock;
+        BitmapImage gambar;
         public MasterGame(OracleConnection conn)
         {
             InitializeComponent();
@@ -71,7 +73,8 @@ namespace PCS_Gaming
             fileDialog.Filter = "Image Files (JPG,PNG,GIF)|*.JPG;*.PNG;*.GIF";
             if (fileDialog.ShowDialog() == true)
             {
-                imagePreview.Source = new BitmapImage(new Uri(fileDialog.FileName));
+                gambar = new BitmapImage(new Uri(fileDialog.FileName));
+                imagePreview.Source = gambar;
             }
         }
 
@@ -89,6 +92,7 @@ namespace PCS_Gaming
             da.Fill(dtGame);
             DGGame.ItemsSource = dtGame.DefaultView;
             DGGame.IsReadOnly = true;
+            imagePreview.Source = null;
             conn.Close();
         }
 
@@ -241,6 +245,10 @@ namespace PCS_Gaming
                 try
                 {
                     cmd.ExecuteNonQuery();
+                    if (gambar != null)
+                    {
+                        saveimage(TBIDGame.Text);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -337,6 +345,16 @@ namespace PCS_Gaming
                     rbActive.IsChecked = false;
                     rbInactive.IsChecked = true;
                 }
+
+                try
+                {
+                    imagePreview.Source = new BitmapImage(new Uri(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\" + selectedID + ".png"));
+                }
+                catch (FileNotFoundException f)
+                {
+                    imagePreview.Source = null;
+                }
+                
             }
 
             ButtonClear.Content = "Cancel";
@@ -399,9 +417,24 @@ namespace PCS_Gaming
                 }
                 conn.Close();
 
+                if (gambar != null)
+                {
+                    saveimage(TBIDGame.Text);
+                }
                 ButtonClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 reloadDG();
             }
+        }
+
+        void saveimage(string namagambar)
+        {
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(gambar));
+            using (var fileStream = new System.IO.FileStream(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\" + namagambar + ".png", System.IO.FileMode.Create))
+            {
+                encoder.Save(fileStream);
+            }
+
         }
 
     }

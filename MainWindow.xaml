@@ -73,7 +73,7 @@
                     materialDesign:HintAssist.Background="{StaticResource bootstrapDark}"
                     materialDesign:HintAssist.Foreground="White"
                     Foreground="White"
-                    BorderBrush="Silver"/>
+                    BorderBrush="Silver" Text="orcl"/>
             </StackPanel>
             <StackPanel Margin="50 5">
                 <TextBox x:Name="TBUser"
@@ -82,7 +82,7 @@
                     materialDesign:HintAssist.Background="{StaticResource bootstrapDark}"
                     materialDesign:HintAssist.Foreground="White"
                     Foreground="White"
-                    BorderBrush="Silver"/>
+                    BorderBrush="Silver" Text="lukky"/>
             </StackPanel>
             <StackPanel Margin="50 5">
                 <PasswordBox x:Name="TBPass"
@@ -91,7 +91,7 @@
                     materialDesign:HintAssist.Background="{StaticResource bootstrapDark}"
                     materialDesign:HintAssist.Foreground="White"
                     Foreground="White"
-                    BorderBrush="Silver"/>
+                    BorderBrush="Silver" Password="lukky"/>
             </StackPanel>
             <Button
                 Margin="50 20"
