@@ -347,6 +347,9 @@
                     </TextBlock.RenderTransform>Price here
                 </TextBlock>
             </StackPanel>
+            <StackPanel Grid.Column="2">
+                <Image Name="imageGame" MaxHeight="500"></Image>
+            </StackPanel>
         </Grid>
         <!--end bagian utama detail (tengah)-->
         

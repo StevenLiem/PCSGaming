@@ -25,12 +25,15 @@ namespace PCS_Gaming
         OracleConnection conn;
         string currentuser = "";
         string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
+
+        List<CartItem> userCart;
         public HomeWindow(OracleConnection conn)
         {
             InitializeComponent();
 
             this.conn = conn;
             generateview();
+            userCart = new List<CartItem>();
         }
 
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
@@ -81,6 +84,7 @@ namespace PCS_Gaming
 
         private void generateview()
         {
+            spbot.Children.Clear();
             OracleDataAdapter da = new OracleDataAdapter("SELECT GAME_ID,NAME FROM GAME WHERE IS_ACTIVE_GAME = 1 ORDER BY RELEASE_DATE DESC", conn);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -151,7 +155,7 @@ namespace PCS_Gaming
         {
             String kode = ((Grid)sender).Name;
             
-            MessageBox.Show(kode);
+            //MessageBox.Show(kode);
             string commandText = "select g.name, d.name, p.name, to_char(g.release_date, 'DD MONTH YYYY'), to_char(g.price,'999,999,999.99') from game g, developer d, publisher p where g.game_id=:a and g.developer_id = d.developer_id and g.publisher_id = p.publisher_id";
             OracleCommand cmd = new OracleCommand(commandText,conn);
             cmd.Parameters.Add(":a", kode);
@@ -169,6 +173,7 @@ namespace PCS_Gaming
                     lblDateGame.Text = rd.GetString(3);
                     lblPriceGame.Text = "Rp "+rd.GetString(4);
                 }
+                imageGame.Source = new BitmapImage(new Uri(imageFolderPath + kode + ".png"));
                 conn.Close();
                 rd.Close();
             }
@@ -189,6 +194,7 @@ namespace PCS_Gaming
             {
                 greta.Visibility = Visibility.Visible;
                 gretb.Visibility = Visibility.Hidden;
+                generateview();
             }
         }
 
