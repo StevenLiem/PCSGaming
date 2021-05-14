@@ -21,10 +21,12 @@ namespace PCS_Gaming
     public partial class LoginWindow : Window
     {
         OracleConnection conn;
-        public LoginWindow(OracleConnection conn)
+        HomeWindow hw;
+
+        public LoginWindow(OracleConnection conn,HomeWindow he)
         {
             InitializeComponent();
-
+            this.hw = he;
             this.conn = conn;
         }
 
@@ -67,6 +69,27 @@ namespace PCS_Gaming
                 {
                     AdminNavigation admin = new AdminNavigation(conn);
                     admin.ShowDialog();
+                }
+                else if (!user.Equals("admin"))
+                {
+                    string kode = MainWindow.ambilstring($"SELECT MEMBER_ID FROM MEMBER WHERE UPPER(USERNAME) = '{TBUser.Text.Trim(' ').ToUpper()}'");
+                    if (kode.Equals(""))
+                    {
+                        MessageBox.Show("User tidak ditemukan!");
+                    }
+                    else
+                    {
+                        if(TBPass.Password.Equals(MainWindow.ambilstring($"SELECT PASSWORD FROM MEMBER WHERE MEMBER_ID = '{kode}'")))
+                        {
+                            MessageBox.Show("Selamat Datang " + MainWindow.ambilstring($"SELECT REAL_NAME FROM MEMBER WHERE MEMBER_ID = '{kode}'") + " :D");
+                            hw.changeuser(kode);
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Password Salah");
+                        }
+                    }
                 }
             }
         }

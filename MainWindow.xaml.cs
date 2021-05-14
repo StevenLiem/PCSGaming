@@ -21,6 +21,8 @@ namespace PCS_Gaming
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public static OracleConnection conn;
         public static string dataSource, user, pass;
         public MainWindow()
         {
@@ -61,7 +63,7 @@ namespace PCS_Gaming
             user = TBUser.Text;
             pass = TBPass.Password;
             var connectionString = "Data Source = " + dataSource + "; User ID=" + user + "; Password=" + pass;
-            OracleConnection conn = new OracleConnection(connectionString);
+            conn = new OracleConnection(connectionString);
             try
             {
                 conn.Open();
@@ -74,6 +76,24 @@ namespace PCS_Gaming
             {
                 MessageBox.Show(ex.Message);
                 conn.Close();
+            }
+        }
+
+        public static string ambilstring(string query)
+        {
+            conn.Open();
+            OracleCommand cmd = new OracleCommand(query,conn);
+            string eh;
+            if(cmd.ExecuteScalar() == null)
+            {
+                conn.Close();
+                return "";
+            }
+            else
+            {
+                eh = cmd.ExecuteScalar().ToString();
+                conn.Close();
+                return eh;
             }
         }
     }

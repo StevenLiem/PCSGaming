@@ -22,6 +22,7 @@ namespace PCS_Gaming
     public partial class HomeWindow : Window
     {
         OracleConnection conn;
+        string currentuser = "";
         public HomeWindow(OracleConnection conn)
         {
             InitializeComponent();
@@ -60,8 +61,20 @@ namespace PCS_Gaming
 
         private void TBlMember_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            LoginWindow login = new LoginWindow(conn);
-            login.ShowDialog();
+            if (currentuser.Equals(""))
+            {
+                LoginWindow login = new LoginWindow(conn, this);
+                login.ShowDialog();
+            }
+            else
+            {
+                if (MessageBox.Show("Yakin ingin Logout?", "WARNING", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    currentuser = "";
+                    TBlMember.Text = "Guest";
+                }
+            }
+            
         }
 
         private void generateview()
@@ -162,6 +175,12 @@ namespace PCS_Gaming
                 greta.Visibility = Visibility.Visible;
                 gretb.Visibility = Visibility.Hidden;
             }
+        }
+
+        public void changeuser(string kode)
+        {
+            currentuser = kode;
+            TBlMember.Text = MainWindow.ambilstring($"SELECT REAL_NAME FROM MEMBER WHERE MEMBER_ID = '{currentuser}'");
         }
     }
 }

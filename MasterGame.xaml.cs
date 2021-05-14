@@ -68,6 +68,7 @@ namespace PCS_Gaming
         private void ButtonAddImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "Image Files (JPG,PNG,GIF)|*.JPG;*.PNG;*.GIF";
             if (fileDialog.ShowDialog() == true)
             {
                 imagePreview.Source = new BitmapImage(new Uri(fileDialog.FileName));
