@@ -185,12 +185,50 @@
                         <TranslateTransform X="25"/>
                     </TransformGroup>
                 </TextBlock.RenderTransform></TextBlock>
-            <ScrollViewer HorizontalAlignment="Left" Height="220" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="1180" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <StackPanel Name="sptop" Orientation="Horizontal" Height="188" Width="1170">
-                </StackPanel>
+            <ScrollViewer 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
+                Margin="10,10,0,0" 
+                Grid.Row="1"
+                ScrollViewer.HorizontalScrollBarVisibility="Visible" 
+                ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <StackPanel 
+                    Name="sptop" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Stretch"/>
             </ScrollViewer>
-            <ScrollViewer HorizontalAlignment="Left" Height="220" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="1180" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                <StackPanel Name="spbot" Orientation="Horizontal" Height="188" Width="1168">
+            <ScrollViewer 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
+                Margin="10,10,0,0" 
+                Grid.Row="3"
+                ScrollViewer.HorizontalScrollBarVisibility="Visible" 
+                ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <StackPanel 
+                    Name="spbot" 
+                    Orientation="Horizontal">
+                    <!--<Border
+                        VerticalAlignment="Center"
+                        BorderBrush="{StaticResource blueishBlack}"
+                        BorderThickness="3"
+                        CornerRadius="5"
+                        Margin="2.5 0">
+                        <Grid
+                            Width="160"
+                            Height="188">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <Label
+                                Grid.Row="1"
+                                Content="Pain Peko"
+                                FontSize="16"
+                                Foreground="White"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>-->
                 </StackPanel>
             </ScrollViewer>
 

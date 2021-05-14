@@ -275,6 +275,7 @@
                             Foreground="White"
                             FontSize="16"
                             VerticalAlignment="Center"
+                            IsChecked="True"
                             Width="100"
                         />
                         <RadioButton

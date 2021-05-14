@@ -27,6 +27,7 @@ namespace PCS_Gaming
         DataTable dtGame;
         List<string> devID, pubID, genID;
         string query, selectedID;
+        string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
         int selectedStock;
         BitmapImage gambar;
         public MasterGame(OracleConnection conn)
@@ -348,7 +349,7 @@ namespace PCS_Gaming
 
                 try
                 {
-                    imagePreview.Source = new BitmapImage(new Uri(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\" + selectedID + ".png"));
+                    imagePreview.Source = new BitmapImage(new Uri(imageFolderPath + selectedID + ".png"));
                 }
                 catch (FileNotFoundException f)
                 {
@@ -377,7 +378,7 @@ namespace PCS_Gaming
             ButtonInsert.IsEnabled = true;
             ButtonUpdate.IsEnabled = false;
             ButtonDelete.IsEnabled = false;
-            rbActive.IsChecked = false;
+            rbActive.IsChecked = true;
             rbInactive.IsChecked = false;
         }
 
@@ -430,7 +431,7 @@ namespace PCS_Gaming
         {
             BitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(gambar));
-            using (var fileStream = new System.IO.FileStream(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\" + namagambar + ".png", System.IO.FileMode.Create))
+            using (var fileStream = new System.IO.FileStream(imageFolderPath + namagambar + ".png", System.IO.FileMode.Create))
             {
                 encoder.Save(fileStream);
             }

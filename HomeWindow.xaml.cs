@@ -24,6 +24,7 @@ namespace PCS_Gaming
     {
         OracleConnection conn;
         string currentuser = "";
+        string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
         public HomeWindow(OracleConnection conn)
         {
             InitializeComponent();
@@ -84,10 +85,8 @@ namespace PCS_Gaming
             DataTable dt = new DataTable();
             da.Fill(dt);
             //for untuk ngeluarin berapa game
-            spbot.Width = 0;
             for (int i = 0; i < 7; i++)
             {
-                spbot.Width = spbot.Width + 172;
                 spbot.Children.Add(generategame(dt.Rows[i][1].ToString(), dt.Rows[i][0].ToString()));
             }
         }
@@ -97,25 +96,26 @@ namespace PCS_Gaming
             Border b = new Border();
             b.BorderBrush = new SolidColorBrush(Color.FromRgb(81, 45, 168));
             b.BorderThickness = new Thickness(3);
-            b.CornerRadius = new CornerRadius(15);
+            b.CornerRadius = new CornerRadius(5);
             b.Margin = new Thickness(2.5, 0, 2.5, 0);
+            b.VerticalAlignment = VerticalAlignment.Center;
 
             Grid g = new Grid();
             g.Width = 160;
             g.Height = 188;
             //Buat Gambar
             RowDefinition r = new RowDefinition();
-            r.Height = new GridLength(6, GridUnitType.Star);
+            r.Height = new GridLength(10, GridUnitType.Star);
             g.RowDefinitions.Add(r);
             //Buat Judul
             r = new RowDefinition();
-            r.Height = new GridLength(4, GridUnitType.Star);
+            r.Height = new GridLength(2, GridUnitType.Star);
             g.RowDefinitions.Add(r);
             //Buat Gambar
             Image i = new Image();
             try
             {
-                i.Source = new BitmapImage(new Uri(System.AppDomain.CurrentDomain.BaseDirectory + "Images\\" + kode + ".png"));
+                i.Source = new BitmapImage(new Uri(imageFolderPath + kode + ".png"));
             }
             catch (FileNotFoundException f)
             {
@@ -129,8 +129,7 @@ namespace PCS_Gaming
             Label t = new Label();
             t.Content = namagame;
             t.FontSize = 16;
-            t.VerticalAlignment = VerticalAlignment.Center;
-            t.HorizontalContentAlignment = HorizontalAlignment.Center;
+            t.VerticalAlignment = VerticalAlignment.Bottom;
             t.HorizontalAlignment = HorizontalAlignment.Center;
             t.Foreground = new SolidColorBrush(Colors.White);
             t.FontWeight = FontWeights.Bold;
