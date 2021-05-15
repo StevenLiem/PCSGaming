@@ -73,10 +73,11 @@ namespace PCS_Gaming
             }
             else
             {
-                if (MessageBox.Show("Yakin ingin Logout?", "WARNING", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Yakin ingin Logout? Cart anda akan dihapus!", "WARNING", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     currentuser = "";
                     TBlMember.Text = "Guest";
+                    userCart = new List<CartItem>();
                 }
             }
             
@@ -184,6 +185,36 @@ namespace PCS_Gaming
                 rd.Close();
             }
 
+            commandText = "select g.name from game_genre gg, genre g where gg.genre_id=g.genre_id and gg.game_id=:a";
+            cmd = new OracleCommand(commandText, conn);
+            cmd.Parameters.Add(":a", kode);
+            conn.Open();
+            rd = cmd.ExecuteReader();
+
+            try
+            {
+                lblGenreGame.Text = "";
+                int ctr = 0;
+                while (rd.Read())
+                {
+                    ctr++;
+                    lblGenreGame.Text += rd.GetString(0)+", ";
+                }
+                if (lblGenreGame.Text.Length > 0)
+                {
+                    lblGenreGame.Text = lblGenreGame.Text.Remove(lblGenreGame.Text.Length - 2, 2);
+                }
+                
+                conn.Close();
+                rd.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+                rd.Close();
+            }
+
             gretb.Visibility = Visibility.Visible;
             greta.Visibility = Visibility.Hidden;
         }
@@ -194,7 +225,8 @@ namespace PCS_Gaming
             {
                 greta.Visibility = Visibility.Visible;
                 gretb.Visibility = Visibility.Hidden;
-                generateview();
+                gretc.Visibility = Visibility.Hidden;
+                //generateview();
             }
         }
 
@@ -202,6 +234,17 @@ namespace PCS_Gaming
         {
             currentuser = kode;
             TBlMember.Text = MainWindow.ambilstring($"SELECT REAL_NAME FROM MEMBER WHERE MEMBER_ID = '{currentuser}'");
+            userCart = new List<CartItem>();
+        }
+
+        private void BtnCart_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (gretc.Visibility == Visibility.Hidden)
+            {
+                greta.Visibility = Visibility.Hidden;
+                gretb.Visibility = Visibility.Hidden;
+                gretc.Visibility = Visibility.Visible;
+            }
         }
     }
 }

@@ -84,15 +84,25 @@
               Grid.Column="1" 
               Background="{StaticResource blueishBlack}">
             
-            <!--bagian button home-->
-            <Grid 
-                Name="btnHome"
-                HorizontalAlignment="Left"
-                Height="40"
-                Width="100"
-                Margin="10 0" MouseLeftButtonDown="BtnHome_MouseLeftButtonDown">
-                <TextBlock Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Home"/>
-            </Grid>
+            <!--bagian button navigasi-->
+            <DockPanel>
+                <Grid 
+                    Name="btnHome"
+                    HorizontalAlignment="Left"
+                    Height="40"
+                    Width="100"
+                    Margin="10 0" MouseLeftButtonDown="BtnHome_MouseLeftButtonDown">
+                    <TextBlock Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Home"/>
+                </Grid>
+                <Grid 
+                    Name="btnCart"
+                    HorizontalAlignment="Left"
+                    Height="40"
+                    Width="100"
+                    Margin="10 0" MouseLeftButtonDown="BtnCart_MouseLeftButtonDown" >
+                    <TextBlock Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Cart"/>
+                </Grid>
+            </DockPanel>
             <!--end bagian button home-->
             
             <!--bagian search box-->
@@ -243,7 +253,7 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
-                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -253,7 +263,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Title:
                 </TextBlock>
-                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -263,7 +273,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Developer:
                 </TextBlock>
-                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -273,7 +283,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Publisher:
                 </TextBlock>
-                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -283,7 +293,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Release Date:
                 </TextBlock>
-                <TextBlock FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -293,10 +303,21 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Price:
                 </TextBlock>
+                <TextBlock FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Genre:
+                </TextBlock>
             </StackPanel>
             
+            
             <StackPanel Grid.Column="1">
-                <TextBlock Name="lblTitleGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock Name="lblTitleGame" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -306,7 +327,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Title here
                 </TextBlock>
-                <TextBlock Name="lblDevGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock Name="lblDevGame" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -316,7 +337,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Developer here
                 </TextBlock>
-                <TextBlock Name="lblPubGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock Name="lblPubGame" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -326,7 +347,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Publisher here
                 </TextBlock>
-                <TextBlock Name="lblDateGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock Name="lblDateGame" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -336,7 +357,7 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Release Date here
                 </TextBlock>
-                <TextBlock Name="lblPriceGame" FontSize="30" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                <TextBlock Name="lblPriceGame" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -346,12 +367,49 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>Price here
                 </TextBlock>
+                <TextBlock Name="lblGenreGame" FontSize="25" FontWeight="Medium" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Margin="0 20">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="25"/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>Genre here
+                </TextBlock>
             </StackPanel>
             <StackPanel Grid.Column="2">
-                <Image Name="imageGame" MaxHeight="500"></Image>
+                <Image Name="imageGame" MaxHeight="500" Margin="10 10"></Image>
+                <DockPanel Margin="15 20" HorizontalAlignment="Center">
+                    <TextBox
+                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                      Foreground="White"
+                      BorderBrush="White"
+                      materialDesign:HintAssist.Hint="Buy Amount"
+                      Text="{Binding Content}"
+                      Margin="8 0"
+                      VerticalAlignment="Bottom"
+                      HorizontalAlignment="Left"
+                      Width="100"/>
+                    <Button
+                      Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                      Width="150"
+                      ToolTip="Add game to cart, minimum amount is 1"
+                      Content="Add to Cart"
+                      HorizontalAlignment="Left"
+                      FontSize="17"/>
+                </DockPanel>
             </StackPanel>
         </Grid>
         <!--end bagian utama detail (tengah)-->
+
+        <!--bagian utama cart (tengah)-->
+        <Grid Name="gretc" Grid.Column="2" Grid.Row="2" Background="{StaticResource kindaBlack}" Visibility="Hidden">
+            <DataGrid Name="cartGrid">
+                
+                
+            </DataGrid>
+        </Grid>
         
         
     </Grid>
