@@ -157,12 +157,11 @@ namespace PCS_Gaming
             String kode = ((Grid)sender).Name;
             currentgame = kode;
             //MessageBox.Show(kode);
-            string commandText = "select g.name, d.name, p.name, to_char(g.release_date, 'DD MONTH YYYY'), to_char(g.price,'999,999,999.99') from game g, developer d, publisher p where g.game_id=:a and g.developer_id = d.developer_id and g.publisher_id = p.publisher_id";
+            string commandText = "select g.name, d.name, p.name, to_char(g.release_date, 'DD MONTH YYYY'), to_char(g.price,'999,999,999.99'), gg.name from game g, developer d, publisher p, genre gg where g.game_id=:a and g.developer_id = d.developer_id and g.publisher_id = p.publisher_id and g.genre_id = gg.genre_id";
             OracleCommand cmd = new OracleCommand(commandText,conn);
             cmd.Parameters.Add(":a", kode);
             conn.Open();
             OracleDataReader rd = cmd.ExecuteReader();
-            
             try
             {
                 
@@ -172,7 +171,8 @@ namespace PCS_Gaming
                     lblDevGame.Text = rd.GetString(1);
                     lblPubGame.Text = rd.GetString(2);
                     lblDateGame.Text = rd.GetString(3);
-                    lblPriceGame.Text = "Rp "+rd.GetString(4);
+                    lblPriceGame.Text = "Rp. "+rd.GetString(4);
+                    lblGenreGame.Text = rd.GetString(5);
                 }
                 imageGame.Source = new BitmapImage(new Uri(imageFolderPath + kode + ".png"));
                 conn.Close();
@@ -185,35 +185,35 @@ namespace PCS_Gaming
                 rd.Close();
             }
 
-            commandText = "select g.name from game_genre gg, genre g where gg.genre_id=g.genre_id and gg.game_id=:a";
-            cmd = new OracleCommand(commandText, conn);
-            cmd.Parameters.Add(":a", kode);
-            conn.Open();
-            rd = cmd.ExecuteReader();
+            //commandText = "select g.name from game_genre gg, genre g where gg.genre_id=g.genre_id and gg.game_id=:a";
+            //cmd = new OracleCommand(commandText, conn);
+            //cmd.Parameters.Add(":a", kode);
+            //conn.Open();
+            //rd = cmd.ExecuteReader();
 
-            try
-            {
-                lblGenreGame.Text = "";
-                int ctr = 0;
-                while (rd.Read())
-                {
-                    ctr++;
-                    lblGenreGame.Text += rd.GetString(0)+", ";
-                }
-                if (lblGenreGame.Text.Length > 0)
-                {
-                    lblGenreGame.Text = lblGenreGame.Text.Remove(lblGenreGame.Text.Length - 2, 2);
-                }
+            //try
+            //{
+            //    lblGenreGame.Text = "";
+            //    int ctr = 0;
+            //    while (rd.Read())
+            //    {
+            //        ctr++;
+            //        lblGenreGame.Text += rd.GetString(0)+", ";
+            //    }
+            //    if (lblGenreGame.Text.Length > 0)
+            //    {
+            //        lblGenreGame.Text = lblGenreGame.Text.Remove(lblGenreGame.Text.Length - 2, 2);
+            //    }
                 
-                conn.Close();
-                rd.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                conn.Close();
-                rd.Close();
-            }
+            //    conn.Close();
+            //    rd.Close();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //    conn.Close();
+            //    rd.Close();
+            //}
 
             gretb.Visibility = Visibility.Visible;
             greta.Visibility = Visibility.Hidden;

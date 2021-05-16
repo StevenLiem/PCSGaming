@@ -380,6 +380,8 @@ namespace PCS_Gaming
             ButtonDelete.IsEnabled = false;
             rbActive.IsChecked = true;
             rbInactive.IsChecked = false;
+
+            imagePreview.Source = null;
         }
 
         private void ButtonInsert_Click(object sender, RoutedEventArgs e)

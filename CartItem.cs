@@ -10,16 +10,33 @@ namespace PCS_Gaming
     {
         private string kodeGame;
         private int amount;
+        private int hargaGame;
+        private string namaGame;
 
         public CartItem(string kodeGame, int amount)
         {
             this.kodeGame = kodeGame;
             this.amount = amount;
+            this.namaGame = MainWindow.ambilstring($"SELECT NAME FROM GAME WHERE GAME_ID ='{kodeGame}'");
+            this.hargaGame = Int32.Parse(MainWindow.ambilstring($"SELECT PRICE FROM GAME WHERE GAME_ID ='{kodeGame}'"));
         }
 
         public string getKode()
         {
             return kodeGame;
+        }
+        public int getHarga()
+        {
+            return hargaGame;
+        }
+        public int getJumlah()
+        {
+            return amount;
+        }
+
+        public string getNama()
+        {
+            return namaGame;
         }
 
         public void setAmount(int amount)
