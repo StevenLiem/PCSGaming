@@ -9,13 +9,21 @@ namespace PCS_Gaming
     class CartItem
     {
         private string kodeGame;
-        private string namaGame;
         private int amount;
 
-        public CartItem(string kodeGame, string namaGame, int amount)
+        public CartItem(string kodeGame, int amount)
         {
             this.kodeGame = kodeGame;
-            this.namaGame = namaGame;
+            this.amount = amount;
+        }
+
+        public string getKode()
+        {
+            return kodeGame;
+        }
+
+        public void setAmount(int amount)
+        {
             this.amount = amount;
         }
     }

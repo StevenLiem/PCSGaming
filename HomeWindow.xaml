@@ -382,6 +382,7 @@
                 <Image Name="imageGame" MaxHeight="500" Margin="10 10"></Image>
                 <DockPanel Margin="15 20" HorizontalAlignment="Center">
                     <TextBox
+                      Name="jumbeli"
                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                       Foreground="White"
                       BorderBrush="White"
@@ -392,12 +393,13 @@
                       HorizontalAlignment="Left"
                       Width="100"/>
                     <Button
+                      Name="addgame"
                       Style="{StaticResource MaterialDesignRaisedAccentButton}"
                       Width="150"
                       ToolTip="Add game to cart, minimum amount is 1"
                       Content="Add to Cart"
                       HorizontalAlignment="Left"
-                      FontSize="17"/>
+                      FontSize="17" Click="addgame_Click"/>
                 </DockPanel>
             </StackPanel>
         </Grid>

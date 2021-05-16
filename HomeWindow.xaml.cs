@@ -23,7 +23,7 @@ namespace PCS_Gaming
     public partial class HomeWindow : Window
     {
         OracleConnection conn;
-        string currentuser = "";
+        string currentuser = "", currentgame = "";
         string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
 
         List<CartItem> userCart;
@@ -122,7 +122,7 @@ namespace PCS_Gaming
             {
                 i.Source = new BitmapImage(new Uri(imageFolderPath + kode + ".png"));
             }
-            catch (FileNotFoundException f)
+            catch (FileNotFoundException)
             {
                 i.Source = null;
             }
@@ -155,7 +155,7 @@ namespace PCS_Gaming
         private void leftclick(object sender, MouseButtonEventArgs e)
         {
             String kode = ((Grid)sender).Name;
-            
+            currentgame = kode;
             //MessageBox.Show(kode);
             string commandText = "select g.name, d.name, p.name, to_char(g.release_date, 'DD MONTH YYYY'), to_char(g.price,'999,999,999.99') from game g, developer d, publisher p where g.game_id=:a and g.developer_id = d.developer_id and g.publisher_id = p.publisher_id";
             OracleCommand cmd = new OracleCommand(commandText,conn);
@@ -244,6 +244,64 @@ namespace PCS_Gaming
                 greta.Visibility = Visibility.Hidden;
                 gretb.Visibility = Visibility.Hidden;
                 gretc.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void addgame_Click(object sender, RoutedEventArgs e)
+        {
+            if(jumbeli.Text.Trim(' ').Equals(""))
+            {
+                MessageBox.Show("Isian tidak boleh kosong");
+            }
+            else
+            {
+                jumbeli.Text = jumbeli.Text.Trim(' ');
+                bool isAngka = true;
+                for (int i = 0; i < jumbeli.Text.Length; i++)
+                {
+                    if (jumbeli.Text[i] < '0' || jumbeli.Text[i] > '9')
+                    {
+                        isAngka = false;
+                    }
+                }
+                if (!isAngka)
+                {
+                    MessageBox.Show("Isian harus berupa angka");
+                }
+                else
+                {
+                    int angka = Int32.Parse(jumbeli.Text);
+                    if (angka < 1)
+                    {
+                        MessageBox.Show("Isian tidak boleh 0");
+                    }
+                    else
+                    {
+                        int indexgame = -1;
+                        for (int i = 0; i < userCart.Count; i++)
+                        {
+                            if (currentgame.Equals(userCart[i].getKode()))
+                            {
+                                indexgame = i;
+                            }
+                        }
+                        if (indexgame >= 0)
+                        {
+                            userCart[indexgame].setAmount(angka);
+                            MessageBox.Show("Jumlah item telah terupdate");
+                            greta.Visibility = Visibility.Visible;
+                            gretb.Visibility = Visibility.Hidden;
+                        }
+                        else
+                        {
+                            userCart.Add(new CartItem(currentgame, angka));
+                            MessageBox.Show("Berhasil Masuk Cart :D");
+                            greta.Visibility = Visibility.Visible;
+                            gretb.Visibility = Visibility.Hidden;
+                        }
+
+                    }
+                }
             }
         }
     }

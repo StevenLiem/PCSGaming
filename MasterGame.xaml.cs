@@ -351,7 +351,7 @@ namespace PCS_Gaming
                 {
                     imagePreview.Source = new BitmapImage(new Uri(imageFolderPath + selectedID + ".png"));
                 }
-                catch (FileNotFoundException f)
+                catch (FileNotFoundException)
                 {
                     imagePreview.Source = null;
                 }
