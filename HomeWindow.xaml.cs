@@ -247,6 +247,45 @@ namespace PCS_Gaming
             }
         }
 
+        private void updateDGCart()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("No");
+            dt.Columns.Add("Name");
+            dt.Columns.Add("Price");
+            dt.Columns.Add("Qty");
+            
+            
+            
+
+            for (int i = 0; i < userCart.Count; i++)
+            {
+                DataRow tambah = dt.NewRow();
+                tambah["No"] = i+1;
+                tambah["Name"] = userCart[i].getNama();
+                tambah["Price"] = userCart[i].getHarga();
+                tambah["Qty"] = userCart[i].getJumlah();
+                
+                dt.Rows.Add(tambah);
+            }
+            cartGrid.ItemsSource = null;
+            cartGrid.ItemsSource = dt.DefaultView;
+            cartGrid.IsReadOnly = true;
+            
+        }
+
+        private void BtnRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Yakin ingin hapus game?", "WARNING",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                DataRowView toBeRemoved = (DataRowView)cartGrid.SelectedItem;
+                int urutan = Convert.ToInt32(toBeRemoved.Row[0]);
+                urutan -= 1;
+                userCart.RemoveAt(urutan);
+                updateDGCart();
+            }
+        }
+
         private void addgame_Click(object sender, RoutedEventArgs e)
         {
             if(jumbeli.Text.Trim(' ').Equals(""))
@@ -289,6 +328,7 @@ namespace PCS_Gaming
                         {
                             userCart[indexgame].setAmount(angka);
                             MessageBox.Show("Jumlah item telah terupdate");
+                            updateDGCart();
                             greta.Visibility = Visibility.Visible;
                             gretb.Visibility = Visibility.Hidden;
                         }
@@ -296,11 +336,13 @@ namespace PCS_Gaming
                         {
                             userCart.Add(new CartItem(currentgame, angka));
                             MessageBox.Show("Berhasil Masuk Cart :D");
+                            updateDGCart();
                             greta.Visibility = Visibility.Visible;
                             gretb.Visibility = Visibility.Hidden;
                         }
 
                     }
+                    jumbeli.Text = "";
                 }
             }
         }

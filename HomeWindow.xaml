@@ -246,7 +246,7 @@
         <!--End bagian utama (tengah)-->
 
         <!--bagian utama detail (tengah)-->
-        <Grid Name="gretb" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}" Visibility="Visible">
+        <Grid Name="gretb" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}" Visibility="hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="2*"/>
@@ -407,9 +407,28 @@
 
         <!--bagian utama cart (tengah)-->
         <Grid Name="gretc" Grid.Column="2" Grid.Row="2" Background="{StaticResource kindaBlack}" Visibility="Hidden">
-            <DataGrid Name="cartGrid">
-
-
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <DataGrid Name="cartGrid" Grid.Column="0" Grid.Row="0" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No" Binding="{Binding No}"/>
+                    <DataGridTextColumn Header="Title Game" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Harga" Binding="{Binding Price}"/>
+                    <DataGridTextColumn Header="Qty" Binding="{Binding Qty}"/>
+                    <DataGridTemplateColumn Header="Delete">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Name="btnRemove" FontSize="15" Click="BtnRemove_Click">Remove from Cart</Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
             </DataGrid>
         </Grid>
 
