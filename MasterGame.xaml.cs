@@ -179,44 +179,21 @@ namespace PCS_Gaming
                 return;
             }
 
-            // brute force :v dari tugas praktikum
-            // mending nanti bikin jadi function di oracle
             if (!string.IsNullOrWhiteSpace(TBTitle.Text) && TBTitle.Text.Length >= 2)
             {
-                string init = "";
-                if (TBTitle.Text.IndexOf(" ") > 0 && TBTitle.Text.IndexOf(" ") < TBTitle.Text.Length - 1)
-                {
-                    init = TBTitle.Text.Substring(0, 1) + TBTitle.Text.Substring(TBTitle.Text.IndexOf(" ") + 1, 1);
-                }
-                else
-                {
-                    init = TBTitle.Text.Substring(0, 2);
-                }
-                init = init.ToUpper();
-
                 conn.Open();
-                query = $"select max(GAME_ID) from GAME where GAME_ID like '{init}%'";
+                query = $"select GENERATE_GAME_ID('{TBTitle.Text}') from dual";
                 OracleCommand cmd = new OracleCommand(query, conn);
                 try
                 {
-                    string ctr = cmd.ExecuteScalar().ToString();
-                    if (string.IsNullOrEmpty(ctr))
-                    {
-                        init += "001";
-                    }
-                    else
-                    {
-                        string ctr2 = Int32.Parse(ctr.Substring(2, 3).TrimStart('0')) + 1 + "";
-                        init += ctr2.PadLeft(3, '0');
-                    }
+                    string kode = cmd.ExecuteScalar().ToString();
+                    TBIDGame.Text = kode;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
                 conn.Close();
-
-                TBIDGame.Text = init;
             }
             else
             {

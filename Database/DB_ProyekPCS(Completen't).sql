@@ -137,6 +137,7 @@ insert into GAME_GENRE(GAME_ID, GENRE_ID) values('YK001','GE001');
 insert into GAME_GENRE(GAME_ID, GENRE_ID) values('YK001','GE002');
 
 
-insert into MEMBER values('MW001', 'Mason Williams', 'mwilliams','freegamespls',TO_DATE('19/08/1999','DD/MM/YYYY'),TO_DATE('07/10/2020','DD/MM/YYYY'));
+insert into MEMBER(REAL_NAME, USERNAME, PASSWORD, BIRTH_DATE, JOINED_DATE) values('Mason Williams', 'mwilliams','freegamespls',TO_DATE('19/08/1999','DD/MM/YYYY'),TO_DATE('07/10/2020','DD/MM/YYYY'));
+insert into MEMBER(REAL_NAME, USERNAME, PASSWORD, BIRTH_DATE) values('Mike Wallace', 'mwallace','yesyesyes',TO_DATE('06/09/1969','DD/MM/YYYY'));
 
 commit;

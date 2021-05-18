@@ -93,5 +93,11 @@ namespace PCS_Gaming
                 }
             }
         }
+
+        private void TBlRegister_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            RegisterWindow regist = new RegisterWindow(conn);
+            regist.ShowDialog();
+        }
     }
 }
