@@ -249,14 +249,12 @@ namespace PCS_Gaming
 
         private void updateDGCart()
         {
+            int subtotal = 0;
             DataTable dt = new DataTable();
             dt.Columns.Add("No");
             dt.Columns.Add("Name");
             dt.Columns.Add("Price");
             dt.Columns.Add("Qty");
-            
-            
-            
 
             for (int i = 0; i < userCart.Count; i++)
             {
@@ -265,12 +263,14 @@ namespace PCS_Gaming
                 tambah["Name"] = userCart[i].getNama();
                 tambah["Price"] = userCart[i].getHarga();
                 tambah["Qty"] = userCart[i].getJumlah();
-                
+                subtotal += userCart[i].getHarga() * userCart[i].getJumlah();
+
                 dt.Rows.Add(tambah);
             }
             cartGrid.ItemsSource = null;
             cartGrid.ItemsSource = dt.DefaultView;
             cartGrid.IsReadOnly = true;
+            totcart.Text = "Rp. " + String.Format("{0:N}", subtotal);
             
         }
 

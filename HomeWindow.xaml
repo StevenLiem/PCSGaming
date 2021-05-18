@@ -430,6 +430,8 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <TextBlock Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Total Pembayaran" FontWeight="Bold" Margin="86.5,31,86.5,393" Grid.Column="1"/>
+            <TextBlock Name="totcart" Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Home" FontWeight="Bold" Margin="41,62,41,361" Grid.Column="1" HorizontalAlignment="Center" Width="278"/>
         </Grid>
 
 
