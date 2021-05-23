@@ -46,3 +46,15 @@ begin
     end if;
 end;
 /
+
+create or replace trigger TR_GAME_TRANSACTION
+before insert on GAME_TRANSACTION
+for each row
+declare
+    ctr number;
+begin
+    select STOCK into ctr from GAME where GAME_ID = :NEW.GAME_ID;
+    ctr := ctr - :NEW.QTY;
+    UPDATE GAME SET STOCK = ctr WHERE GAME_ID = :NEW.GAME_ID;
+end;
+/

@@ -25,7 +25,8 @@ namespace PCS_Gaming
         OracleConnection conn;
         string currentuser = "", currentgame = "";
         string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
-
+        DataTable dt;
+        int subtotal;
         List<CartItem> userCart;
         public HomeWindow(OracleConnection conn)
         {
@@ -249,8 +250,8 @@ namespace PCS_Gaming
 
         private void updateDGCart()
         {
-            int subtotal = 0;
-            DataTable dt = new DataTable();
+            subtotal = 0;
+            dt = new DataTable();
             dt.Columns.Add("No");
             dt.Columns.Add("Name");
             dt.Columns.Add("Price");
@@ -282,6 +283,44 @@ namespace PCS_Gaming
                 int urutan = Convert.ToInt32(toBeRemoved.Row[0]);
                 urutan -= 1;
                 userCart.RemoveAt(urutan);
+                updateDGCart();
+            }
+        }
+
+
+        private void ButttonBuy_Click(object sender, RoutedEventArgs e)
+        {
+            if (userCart.Count == 0)
+            {
+                MessageBox.Show("Cart anda masih kosong");
+            }
+            else
+            {
+                conn.Open();
+                string token = "";
+                Random r = new Random();
+                for (int i = 0; i < 10; i++)
+                {
+                    if (r.Next(2) == 1)
+                    {
+                        token += (char)r.Next(48, 58);
+                    }
+                    else
+                    {
+                        token += (char)r.Next(65, 91);
+                    }
+                    
+                }
+                OracleCommand com = new OracleCommand($"INSERT INTO TRANSACTION VALUES ('{token}','{currentuser}',TO_DATE('{DateTime.Today.ToString("dd/MM/yyyy")}','dd/mm/yyyy'),'{subtotal}')", conn);
+                com.ExecuteNonQuery();
+                foreach (CartItem a in userCart)
+                {
+                    com = new OracleCommand($"INSERT INTO GAME_TRANSACTION VALUES ('{a.getKode()}','{token}',{a.getHarga()},{a.getJumlah()},{a.getJumlah() * a.getHarga()})", conn);
+                    com.ExecuteNonQuery();
+                }
+                conn.Close();
+                MessageBox.Show("Transaksi Berhasil :D");
+                userCart = new List<CartItem>();
                 updateDGCart();
             }
         }
