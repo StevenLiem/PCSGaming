@@ -95,6 +95,14 @@ namespace PCS_Gaming
             {
                 spbot.Children.Add(generategame(dt.Rows[i][1].ToString(), dt.Rows[i][0].ToString()));
             }
+            da = new OracleDataAdapter("SELECT gt.GAME_ID,g.NAME ,nvl(sum(gt.QTY),0) as \"iya\" FROM GAME_TRANSACTION gt RIGHT JOIN GAME g ON gt.GAME_ID = g.GAME_ID WHERE g.IS_ACTIVE_GAME = 1 GROUP BY gt.GAME_ID,g.NAME ORDER BY \"iya\" DESC,g.NAME ASC", conn);
+            dt = new DataTable();
+            da.Fill(dt);
+            //for untuk ngeluarin berapa game
+            for (int i = 0; i < 7; i++)
+            {
+                sptop.Children.Add(generategame(dt.Rows[i][1].ToString(), dt.Rows[i][0].ToString()));
+            }
         }
 
         private Border generategame(string namagame,string kode)
