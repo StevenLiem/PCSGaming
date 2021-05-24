@@ -28,6 +28,7 @@ namespace PCS_Gaming
         DataTable dt;
         int subtotal;
         List<CartItem> userCart;
+        List<string> searchResultKodeGame;
         public HomeWindow(OracleConnection conn)
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace PCS_Gaming
             this.conn = conn;
             generateview();
             userCart = new List<CartItem>();
+            searchResultKodeGame = new List<string>();
         }
 
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
@@ -79,6 +81,7 @@ namespace PCS_Gaming
                     currentuser = "";
                     TBlMember.Text = "Guest";
                     userCart = new List<CartItem>();
+                    updateDGCart();
                 }
             }
             
@@ -235,6 +238,7 @@ namespace PCS_Gaming
                 greta.Visibility = Visibility.Visible;
                 gretb.Visibility = Visibility.Hidden;
                 gretc.Visibility = Visibility.Hidden;
+                gretd.Visibility = Visibility.Hidden;
                 //generateview();
             }
         }
@@ -244,6 +248,7 @@ namespace PCS_Gaming
             currentuser = kode;
             TBlMember.Text = MainWindow.ambilstring($"SELECT REAL_NAME FROM MEMBER WHERE MEMBER_ID = '{currentuser}'");
             userCart = new List<CartItem>();
+            updateDGCart();
         }
 
         private void BtnCart_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -253,6 +258,7 @@ namespace PCS_Gaming
                 greta.Visibility = Visibility.Hidden;
                 gretb.Visibility = Visibility.Hidden;
                 gretc.Visibility = Visibility.Visible;
+                gretd.Visibility = Visibility.Hidden;
             }
         }
 
@@ -334,6 +340,59 @@ namespace PCS_Gaming
                 conn.Close();
                 userCart = new List<CartItem>();
                 updateDGCart();
+            }
+        }
+
+        private void Grid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if(greta.Visibility == Visibility.Visible)
+                {
+                    greta.Visibility = Visibility.Hidden;
+                }
+                if (gretb.Visibility == Visibility.Visible)
+                {
+                    gretb.Visibility = Visibility.Hidden;
+                }
+                if (gretc.Visibility == Visibility.Visible)
+                {
+                    gretc.Visibility = Visibility.Hidden;
+                }
+                gretd.Visibility = Visibility.Visible;
+
+                string query = searchBox.Text.ToLower();
+                resultText.Text = "Showing \"" +query+ "\"";
+
+                OracleCommand cmd = new OracleCommand("select g.name, d.name, p.name, g.game_id from game g, developer d, publisher p where g.developer_id=d.developer_id and g.publisher_id = p.publisher_id and (lower(g.name) like '%"+query+"%' or lower(d.name) like '%"+query+"%' or lower(p.name) like '%"+query+"%')", conn);
+                //MessageBox.Show(cmd.CommandText);
+                conn.Open();
+                OracleDataReader rd = cmd.ExecuteReader();
+
+                DataTable tempDt = new DataTable();
+                tempDt.Columns.Add("No");
+                tempDt.Columns.Add("Title");
+                tempDt.Columns.Add("Developer");
+                tempDt.Columns.Add("Publisher");
+                int count = 0;
+                while (rd.Read())
+                {
+                    count++;
+                    DataRow tambah = tempDt.NewRow();
+                    tambah["No"] = count;
+                    tambah["Title"] = rd.GetString(0);
+                    tambah["Developer"] = rd.GetString(1);
+                    tambah["Publisher"] = rd.GetString(2);
+                    searchResultKodeGame.Add(rd.GetString(3));
+
+                    tempDt.Rows.Add(tambah);
+                }
+                conn.Close();
+                searchGrid.ItemsSource = null;
+                searchGrid.ItemsSource = tempDt.DefaultView;
+                searchGrid.IsReadOnly = true;
+
+
             }
         }
 

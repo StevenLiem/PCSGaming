@@ -111,7 +111,7 @@
                 HorizontalAlignment="Right"
                 Height="40"
                 Width="300"
-                Margin="0 0 200 0">
+                Margin="0 0 200 0" KeyDown="Grid_KeyDown">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition/>
@@ -124,6 +124,7 @@
                     HorizontalAlignment="Center"
                     Foreground="White"/>
                 <TextBox 
+                    Name="searchBox"
                     Grid.Column="1"
                     BorderThickness="0"
                     Foreground="White"
@@ -170,7 +171,7 @@
         <!--End bagian samping-->
 
         <!--bagian utama (tengah)-->
-        <Grid Name="greta" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}" Visibility="Visible">
+        <Grid Name="greta" Grid.Row="2" Grid.Column="2" Background="{StaticResource kindaBlack}" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="4*"/>
@@ -442,6 +443,23 @@
                 <TextBlock
                     Text="Beli"/>
             </Button>
+        </Grid>
+
+        <Grid Name="gretd" Grid.Column="2" Grid.Row="2" Background="{StaticResource kindaBlack}" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="7*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="resultText" Text="Showing" Foreground="White" FontSize="30" VerticalAlignment="Center" Grid.Row="0"/>
+            <DataGrid
+                Name="searchGrid"
+                Grid.Row="1"
+                Margin="40 10 40 20"
+                FontSize="20">
+                
+                
+            </DataGrid>
         </Grid>
 
 
