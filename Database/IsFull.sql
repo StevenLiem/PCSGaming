@@ -6,6 +6,7 @@ drop table GENRE cascade constraint purge;
 drop table TRANSACTION cascade constraint purge;
 drop table MEMBER cascade constraint purge;
 drop table BUNDLE cascade constraint purge;
+drop table TOKEN_CONTENTS cascade constraint purge;
 drop table GAME_TRANSACTION cascade constraint purge;
 drop table GAME_BUNDLE cascade constraint purge;
 
@@ -55,6 +56,11 @@ create table BUNDLE(
     DISCOUNT number,
 	START_PERIOD date,
 	END_PERIOD date
+);
+create table TOKEN_CONTENTS(
+	TOKEN_ID varchar2(10),
+	GAME_ID varchar2(5),
+	QTY number
 );
 create table GAME_TRANSACTION(
 	GAME_ID varchar2(5),
@@ -141,7 +147,6 @@ insert into MEMBER(REAL_NAME, USERNAME, PASSWORD, BIRTH_DATE, JOINED_DATE) value
 insert into MEMBER(REAL_NAME, USERNAME, PASSWORD, BIRTH_DATE) values('Mike Wallace', 'mwallace','yesyesyes',TO_DATE('06/09/1969','DD/MM/YYYY'));
 
 commit;
-
 
 -- Function --
 create or replace FUNCTION GENERATE_GAME_ID

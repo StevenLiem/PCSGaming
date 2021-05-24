@@ -86,6 +86,7 @@ namespace PCS_Gaming
 
         private void generateview()
         {
+            sptop.Children.Clear();
             spbot.Children.Clear();
             OracleDataAdapter da = new OracleDataAdapter("SELECT GAME_ID,NAME FROM GAME WHERE IS_ACTIVE_GAME = 1 ORDER BY RELEASE_DATE DESC", conn);
             DataTable dt = new DataTable();
@@ -95,7 +96,7 @@ namespace PCS_Gaming
             {
                 spbot.Children.Add(generategame(dt.Rows[i][1].ToString(), dt.Rows[i][0].ToString()));
             }
-            da = new OracleDataAdapter("SELECT gt.GAME_ID,g.NAME ,nvl(sum(gt.QTY),0) as \"iya\" FROM GAME_TRANSACTION gt RIGHT JOIN GAME g ON gt.GAME_ID = g.GAME_ID WHERE g.IS_ACTIVE_GAME = 1 GROUP BY gt.GAME_ID,g.NAME ORDER BY \"iya\" DESC,g.NAME ASC", conn);
+            da = new OracleDataAdapter("SELECT nvl(gt.GAME_ID,g.GAME_ID),g.NAME ,nvl(sum(gt.QTY),0) as \"iya\" FROM GAME_TRANSACTION gt RIGHT JOIN GAME g ON gt.GAME_ID = g.GAME_ID WHERE g.IS_ACTIVE_GAME = 1 GROUP BY gt.GAME_ID,g.NAME,g.GAME_ID ORDER BY \"iya\" DESC,g.NAME ASC", conn);
             dt = new DataTable();
             da.Fill(dt);
             //for untuk ngeluarin berapa game
@@ -189,7 +190,6 @@ namespace PCS_Gaming
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
                 conn.Close();
                 rd.Close();
             }
@@ -317,17 +317,21 @@ namespace PCS_Gaming
                     {
                         token += (char)r.Next(65, 91);
                     }
-                    
                 }
-                OracleCommand com = new OracleCommand($"INSERT INTO TRANSACTION VALUES ('{token}','{currentuser}',TO_DATE('{DateTime.Today.ToString("dd/MM/yyyy")}','dd/mm/yyyy'),'{subtotal}')", conn);
-                com.ExecuteNonQuery();
+                if (MessageBox.Show("Token Anda adalah "+token+", apakah anda ingin jiplak ke clipboard?", "KONFIRMASI", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    Clipboard.SetText(token);
+                    MessageBox.Show("Telah terjiplak di clipboard");
+                }
+                OracleCommand com;
+                //com= new OracleCommand($"INSERT INTO TRANSACTION VALUES ('{token}','{currentuser}',TO_DATE('{DateTime.Today.ToString("dd/MM/yyyy")}','dd/mm/yyyy'),'{subtotal}')", conn);
+                //com.ExecuteNonQuery();
                 foreach (CartItem a in userCart)
                 {
-                    com = new OracleCommand($"INSERT INTO GAME_TRANSACTION VALUES ('{a.getKode()}','{token}',{a.getHarga()},{a.getJumlah()},{a.getJumlah() * a.getHarga()})", conn);
+                    com = new OracleCommand($"INSERT INTO TOKEN_CONTENTS VALUES ('{token}','{a.getKode()}','{a.getJumlah()}')", conn);
                     com.ExecuteNonQuery();
                 }
                 conn.Close();
-                MessageBox.Show("Transaksi Berhasil :D");
                 userCart = new List<CartItem>();
                 updateDGCart();
             }
