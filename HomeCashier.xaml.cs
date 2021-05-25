@@ -330,6 +330,42 @@ namespace PCS_Gaming
             this.Close();
         }
 
+        private void tokhen_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Return && !tokhen.Text.Trim(' ').Equals(""))
+            {
+                showgames();
+            }
+        }
+
+        void showgames()
+        {
+            if(tokhen.Text.Trim(' ').Equals(""))
+            {
+                MessageBox.Show("Token Mohon Diisi");
+            }
+            else
+            {
+                tokhen.Text = tokhen.Text.Trim(' ');
+                try
+                {
+                    OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as \"NO.\",g.NAME,g.PRICE,t.QTY FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.GAME_ID = g.GAME_ID", conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    inicart.ItemsSource = dt.AsDataView();
+                    GridHome.Visibility = Visibility.Hidden;
+                    GridCart.Visibility = Visibility.Visible;
+                    MessageBox.Show(dt.Rows.Count+"");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    throw;
+                }
+                
+            }
+        }
+
         private void ButtonInsert_Click(object sender, RoutedEventArgs e)
         {
             bool valid = checkInputtedData();

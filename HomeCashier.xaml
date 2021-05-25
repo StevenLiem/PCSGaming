@@ -67,7 +67,7 @@
         </Grid>
         <!--End buat custom window button-->
 
-        
+
         <!--Bagian Navigasi-->
         <Grid 
             Grid.Row="1"
@@ -131,10 +131,30 @@
         <Grid 
             Grid.Row="2"
             x:Name="GridHome"
-            Visibility="Visible">
-            
-            
-            
+            Visibility="Visible"
+            Background="{StaticResource kindaBlack}">
+            <TextBlock Style="{StaticResource ChangeOnHover}" FontSize="48" VerticalAlignment="Center" TextAlignment="Center" Text="Insert Token" FontWeight="Bold" Margin="412,207,412,438" Grid.Row="2" Height="75"/>
+            <Grid 
+            Background="{StaticResource bootstrapDark}"
+            HorizontalAlignment="Right"
+            Width="492"
+            Margin="0,326,389,333" Grid.Row="2">
+                <TextBox 
+                VerticalContentAlignment="Center"
+                x:Name="tokhen"
+                BorderThickness="0"
+                Foreground="White"
+                VerticalAlignment="Center"
+                materialDesign:HintAssist.Hint="Token Here " Height="40" Margin="10,10,10,11" FontSize="16" KeyDown="tokhen_KeyDown"/>
+            </Grid>
+        </Grid>
+        <Grid 
+            Grid.Row="2"
+            x:Name="GridCart"
+            Visibility="Hidden"
+            Background="{StaticResource kindaBlack}">
+            <DataGrid Name="inicart" Margin="10,10,424,255" IsReadOnly="True"/>
+
         </Grid>
         <!--End Grid home-->
 
@@ -410,6 +430,7 @@
             Visibility="Hidden">
 
         </Grid>
+        
         <!--End Grid Master Report-->
     </Grid>
 </Window>
