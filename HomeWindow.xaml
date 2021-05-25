@@ -92,7 +92,7 @@
                     Height="40"
                     Width="100"
                     Margin="10 0" MouseLeftButtonDown="BtnHome_MouseLeftButtonDown">
-                    <TextBlock Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Home" FontWeight="Bold"/>
+                    <TextBlock Style="{StaticResource ChangeOnHover}" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Home" FontWeight="Bold"/>
                 </Grid>
                 <Grid 
                     Name="btnCart"
@@ -100,7 +100,7 @@
                     Height="40"
                     Width="100"
                     Margin="10 0" MouseLeftButtonDown="BtnCart_MouseLeftButtonDown" >
-                    <TextBlock Foreground="White" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Cart" FontWeight="Bold"/>
+                    <TextBlock Style="{StaticResource ChangeOnHover}" FontSize="20" VerticalAlignment="Center" TextAlignment="Center" Text="Cart" FontWeight="Bold"/>
                 </Grid>
             </DockPanel>
             <!--end bagian button home-->

@@ -1,4 +1,4 @@
-﻿<Window x:Class="PCS_Gaming.MasterGame"
+﻿<Window x:Class="PCS_Gaming.HomeCashier"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,15 +6,15 @@
         xmlns:local="clr-namespace:PCS_Gaming"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MasterGame" Height="800" Width="1280"
+        Title="LoginWindow" Height="860" Width="1280"
         ResizeMode="NoResize"
         WindowStyle="None"
         Background="{StaticResource bootstrapDark}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="35*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--buat custom window button-->
@@ -67,40 +67,122 @@
         </Grid>
         <!--End buat custom window button-->
 
-        <Grid Grid.Row="1">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel 
+        
+        <!--Bagian Navigasi-->
+        <Grid 
+            Grid.Row="1"
+            Background="{StaticResource blueishBlack}">
+            <!--bagian button navigasi-->
+            <DockPanel>
+                <Grid 
+                    Name="ButtonHome"
+                    HorizontalAlignment="Left"
+                    Margin="50 0" MouseLeftButtonDown="ButtonHome_MouseLeftButtonDown">
+                    <TextBlock 
+                        Style="{StaticResource ChangeOnHover}"
+                        FontSize="24" 
+                        VerticalAlignment="Center" 
+                        TextAlignment="Center" 
+                        Text="Home" 
+                        FontWeight="Bold"/>
+                </Grid>
+                <Grid 
+                    Name="ButtonMasterGame"
+                    HorizontalAlignment="Left"
+                    Margin="50 0" MouseLeftButtonDown="ButtonMasterGame_MouseLeftButtonDown" >
+                    <TextBlock 
+                        Style="{StaticResource ChangeOnHover}"
+                        FontSize="24"
+                        VerticalAlignment="Center" 
+                        TextAlignment="Center" 
+                        Text="Master Game" 
+                        FontWeight="Bold"/>
+                </Grid>
+                <Grid 
+                    Name="ButtonMasterBundle"
+                    HorizontalAlignment="Left"
+                    Margin="50 0" MouseLeftButtonDown="ButtonMasterBundle_MouseLeftButtonDown" >
+                    <TextBlock 
+                        Style="{StaticResource ChangeOnHover}"
+                        FontSize="24" 
+                        VerticalAlignment="Center" 
+                        TextAlignment="Center" 
+                        Text="Master Bundle" 
+                        FontWeight="Bold"/>
+                </Grid>
+                <Grid 
+                    Name="ButtonMasterReport"
+                    HorizontalAlignment="Left"
+                    Margin="50 0" MouseLeftButtonDown="ButtonMasterReport_MouseLeftButtonDown" >
+                    <TextBlock 
+                        Style="{StaticResource ChangeOnHover}"
+                        FontSize="24" 
+                        VerticalAlignment="Center" 
+                        TextAlignment="Center" 
+                        Text="Master Report" 
+                        FontWeight="Bold"/>
+                </Grid>
+            </DockPanel>
+            <!--end bagian button home-->
+        </Grid>
+        <!--End Bagian Navigasi-->
+
+        <!--Grid home-->
+        <Grid 
+            Grid.Row="2"
+            x:Name="GridHome"
+            Visibility="Visible">
+            
+            
+            
+        </Grid>
+        <!--End Grid home-->
+
+        <!--Grid Master Game-->
+        <Grid 
+            Grid.Row="2"
+            x:Name="GridMasterGame"
+            Visibility="Hidden">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="35*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel 
                     Orientation="Vertical"
                     Width="300"
                     Height="350"
                     Margin="80 20 40 20"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Left">
-                    <Border 
+                        <Border 
                         BorderThickness="1"
                         BorderBrush="White"
                         materialDesign:ShadowAssist.ShadowDepth="Depth4">
-                        <Image
+                            <Image
                             x:Name="imagePreview"
                             Height="300" 
                             Width="300"/>
-                    </Border>
-                    <Button
+                        </Border>
+                        <Button
                         x:Name="ButtonAddImage"
                         Content="Upload Image"
                         Margin="10"
                         materialDesign:ButtonAssist.CornerRadius="10"
                         Click="ButtonAddImage_Click"/>
-                </StackPanel>
-                <StackPanel Margin="0 20">
-                    <StackPanel Orientation="Horizontal">
-                        <Label 
+                    </StackPanel>
+                    <StackPanel Margin="0 20">
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
                             Content="ID"
                             Foreground="White"
                             FontSize="16"
                             Width="100"
                             Margin="0 10"/>
-                        <TextBox 
+                            <TextBox 
                             x:Name="TBIDGame"
                             Foreground="White"
                             VerticalAlignment="Center"
@@ -108,31 +190,31 @@
                             Width="300"
                             BorderBrush="White"
                             IsEnabled="False"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label 
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
                             Content="Title"
                             Foreground="White"
                             FontSize="16"
                             Width="100"
                             Margin="0 10"/>
-                        <TextBox 
+                            <TextBox 
                             x:Name="TBTitle"
                             Foreground="White"
                             VerticalAlignment="Center"
                             FontSize="16"
                             Width="300"
                             BorderBrush="White"
-                            materialDesign:HintAssist.Hint="Insert Title" TextChanged="TextBox_TextChanged"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label 
+                            materialDesign:HintAssist.Hint="Insert Title" TextChanged="TBTitle_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
                             Content="Developer"
                             Foreground="White"
                             FontSize="16"
                             Width="100"
                             Margin="0 10"/>
-                        <ComboBox
+                            <ComboBox
                             x:Name="CBDeveloper"
                             materialDesign:HintAssist.Hint="Select Developer"
                             
@@ -143,25 +225,25 @@
                             Background="{StaticResource bootstrapDark}"
                             >
 
-                            
-                            
-                            <ComboBox.ItemContainerStyle>
-                                <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
-                                    <Setter Property="BorderBrush" Value="{StaticResource bootstrapDark}"/>
-                                    <Setter Property="BorderThickness" Value="1"/>
-                                </Style>
-                            </ComboBox.ItemContainerStyle>
-                        </ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label 
+
+
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource bootstrapDark}"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
                             Content="Publisher"
                             Foreground="White"
                             FontSize="16"
                             Width="100"
                             Margin="0 10"/>
-                        <ComboBox
+                            <ComboBox
                             x:Name="CBPublisher"
                             materialDesign:HintAssist.Hint="Select Publisher"
                             Width="300"
@@ -169,22 +251,22 @@
                             Foreground="White"
                             BorderBrush="White"
                             Background="{StaticResource bootstrapDark}">
-                            <ComboBox.ItemContainerStyle>
-                                <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
-                                    <Setter Property="BorderThickness" Value="0"/>
-                                </Style>
-                            </ComboBox.ItemContainerStyle>
-                        </ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label 
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
                             Content="Genre"
                             Foreground="White"
                             FontSize="16"
                             Width="100"
                             Margin="0 10"/>
-                        <ComboBox
+                            <ComboBox
                             x:Name="CBGenre"
                             materialDesign:HintAssist.Hint="Select Genre"
                             Width="300"
@@ -192,22 +274,22 @@
                             Foreground="White"
                             BorderBrush="White"
                             Background="{StaticResource bootstrapDark}">
-                            <ComboBox.ItemContainerStyle>
-                                <Style TargetType="ComboBoxItem">
-                                    <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
-                                    <Setter Property="BorderThickness" Value="0"/>
-                                </Style>
-                            </ComboBox.ItemContainerStyle>
-                        </ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label 
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
                             Content="Price"
                             Foreground="White"
                             FontSize="16"
                             Width="100"
                             Margin="0 10"/>
-                        <TextBox 
+                            <TextBox 
                             x:Name="TBPrice"
                             Foreground="White"
                             VerticalAlignment="Center"
@@ -215,15 +297,15 @@
                             Width="300"
                             BorderBrush="White"
                             materialDesign:HintAssist.Hint=" > 10000"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label 
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
                             Content="Stock"
                             Foreground="White"
                             FontSize="16"
                             Width="100"
                             Margin="0 10"/>
-                        <TextBox 
+                            <TextBox 
                             x:Name="TBStock"
                             Foreground="White"
                             VerticalAlignment="Center"
@@ -231,30 +313,30 @@
                             Width="300"
                             BorderBrush="White"
                             materialDesign:HintAssist.Hint=" >= 0"/>
+                        </StackPanel>
+
                     </StackPanel>
-                    
-                </StackPanel>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="450">
-                    <Button
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="450">
+                        <Button
                         x:Name="ButtonClear"
                         Width="200"
                         Margin="0 20"
                         Content="Clear"
                         ToolTip="Clear all inputs" Click="ButtonClear_Click"/>
-                    <Button
+                        <Button
                         x:Name="ButtonInsert"
                         Width="200"
                         Margin="0 20"
                         Content="Insert"
                         ToolTip="Insert game to database" Click="ButtonInsert_Click"/>
-                    <Button
+                        <Button
                         x:Name="ButtonUpdate"
                         Width="200"
                         Margin="0 20"
                         Content="Update"
                         IsEnabled="False"
                         ToolTip="Update game from database" Click="ButtonUpdate_Click"/>
-                    <Button
+                        <Button
                         x:Name="ButtonDelete"
                         Width="200"
                         Margin="0 20"
@@ -262,14 +344,14 @@
                         IsEnabled="False"
                         ToolTip="Delete selected game" Click="ButtonDelete_Click"/>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label 
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label 
                             Content="Is Active"
                             Foreground="White"
                             FontSize="16"
                             Width="80"
                             Margin="0 10"/>
-                        <RadioButton
+                            <RadioButton
                             x:Name="rbActive"
                             Content="Active"
                             Foreground="White"
@@ -278,7 +360,7 @@
                             IsChecked="True"
                             Width="100"
                         />
-                        <RadioButton
+                            <RadioButton
                             x:Name="rbInactive"
                             Content="Inactive"
                             Foreground="White"
@@ -287,27 +369,47 @@
                             Width="100"
                         />
 
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-                
-            </StackPanel>
 
-        </Grid>
-        <!--bagian bawah-->
-        <Grid Grid.Row="2">
-            <StackPanel Orientation="Vertical">
-                <TextBlock 
+                </StackPanel>
+
+            </Grid>
+            <!--bagian bawah-->
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock 
                     Text="List Game"
                     FontSize="24"
                     Foreground="White"
                     FontWeight="Bold"
                     Margin="20 0"/>
-                <DataGrid 
+                    <DataGrid 
                     x:Name="DGGame" 
                     HorizontalAlignment="Stretch"
-                    Height="300"
+                    Height="280"
                     Margin="20 10" MouseDoubleClick="DGGame_MouseDoubleClick"/>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
+        <!--End Grid Master Game-->
+
+        <!--Grid Master Bundle-->
+        <Grid 
+            Grid.Row="2"
+            x:Name="GridMasterBundle"
+            Visibility="Hidden">
+
+        </Grid>
+        <!--End Grid Master Bundle-->
+
+        <!--Grid Master Report-->
+        <Grid 
+            Grid.Row="2"
+            x:Name="GridMasterReport"
+            Visibility="Hidden">
+
+        </Grid>
+        <!--End Grid Master Report-->
     </Grid>
 </Window>

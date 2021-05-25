@@ -16,16 +16,22 @@ using System.Windows.Shapes;
 namespace PCS_Gaming
 {
     /// <summary>
-    /// Interaction logic for AdminNavigation.xaml
+    /// Interaction logic for StartNavigation.xaml
     /// </summary>
-    public partial class AdminNavigation : Window
+    public partial class StartNavigation : Window
     {
         OracleConnection conn;
-        public AdminNavigation(OracleConnection conn)
+        public StartNavigation(OracleConnection conn)
         {
             InitializeComponent();
 
             this.conn = conn;
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
         }
 
         private void minimizeButton_Click(object sender, RoutedEventArgs e)
@@ -50,16 +56,16 @@ namespace PCS_Gaming
             this.Close();
         }
 
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ButtonAdmin_Click(object sender, RoutedEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
-                DragMove();
+            HomeCashier home = new HomeCashier(conn);
+            home.ShowDialog();
         }
 
-        private void ButtonMasterGame_Click(object sender, RoutedEventArgs e)
+        private void ButtonCustomer_Click(object sender, RoutedEventArgs e)
         {
-            MasterGame mGame = new MasterGame(conn);
-            mGame.ShowDialog();
+            HomeWindow home = new HomeWindow(conn);
+            home.ShowDialog();
         }
     }
 }

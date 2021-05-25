@@ -1,4 +1,4 @@
-﻿<Window x:Class="PCS_Gaming.AdminNavigation"
+﻿<Window x:Class="PCS_Gaming.StartNavigation"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:PCS_Gaming"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="600" Width="600"
+        Title="LoginWindow" Height="200" Width="400"
         ResizeMode="NoResize"
         WindowStyle="None"
         Background="{StaticResource bootstrapDark}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--buat custom window button-->
@@ -67,29 +67,27 @@
         <!--End buat custom window button-->
 
         <Grid Grid.Row="1">
-            <StackPanel Orientation="Vertical">
-                <Button
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    Content="Master Game"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Height="80"
-                    Margin="40 60 40 20"
-                    FontSize="18"
-                    Name="ButtonMasterGame"
-                    Click="ButtonMasterGame_Click">
-                </Button>
-                <Button
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    Content="Master Bundle"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Height="80"
-                    Margin="40 20"
-                    FontSize="18"
-                    Name="ButtonMasterBundle">
-                </Button>
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                x:Name="ButtonAdmin"
+                Content="Form Cashier"
+                Height="auto"
+                FontSize="18"
+                materialDesign:ButtonAssist.CornerRadius="20"
+                Margin="20" Click="ButtonAdmin_Click"/>
+            <Button
+                Grid.Column="1"
+                x:Name="ButtonCustomer"
+                Content="Form Customer"
+                Height="auto"
+                FontSize="18"
+                materialDesign:ButtonAssist.CornerRadius="20"
+                Margin="20" Click="ButtonCustomer_Click"/>
         </Grid>
     </Grid>
 </Window>

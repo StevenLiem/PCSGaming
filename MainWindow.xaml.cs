@@ -70,9 +70,9 @@ namespace PCS_Gaming
             {
                 conn.Open();
                 conn.Close();
-                HomeWindow home = new HomeWindow(conn);
+                StartNavigation nav = new StartNavigation(conn);
                 this.Hide();
-                home.ShowDialog();
+                nav.ShowDialog();
             }
             catch (OracleException ex)
             {

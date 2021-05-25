@@ -16,6 +16,15 @@
             <SolidColorBrush x:Key="kindaBlack" Color="#16181E"/>
             <SolidColorBrush x:Key="blueishBlack" Color="#20202C"/>
             <SolidColorBrush x:Key="bootstrapDark" Color="#272b30"/>
+
+            <Style x:Key="ChangeOnHover" TargetType="{x:Type TextBlock}">
+                <Setter Property= "TextBlock.Foreground" Value="LightGray"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="TextBlock.Foreground" Value="White"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

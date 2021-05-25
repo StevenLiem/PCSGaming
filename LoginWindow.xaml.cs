@@ -65,30 +65,22 @@ namespace PCS_Gaming
                 string user = TBUser.Text;
                 string pass = TBPass.Password;
 
-                if (user.Equals("admin") && pass.Equals("admin"))
+                string kode = MainWindow.ambilstring($"SELECT MEMBER_ID FROM MEMBER WHERE UPPER(USERNAME) = '{TBUser.Text.Trim(' ').ToUpper()}'");
+                if (kode.Equals(""))
                 {
-                    AdminNavigation admin = new AdminNavigation(conn);
-                    admin.ShowDialog();
+                    MessageBox.Show("User tidak ditemukan!");
                 }
-                else if (!user.Equals("admin"))
+                else
                 {
-                    string kode = MainWindow.ambilstring($"SELECT MEMBER_ID FROM MEMBER WHERE UPPER(USERNAME) = '{TBUser.Text.Trim(' ').ToUpper()}'");
-                    if (kode.Equals(""))
+                    if (TBPass.Password.Equals(MainWindow.ambilstring($"SELECT PASSWORD FROM MEMBER WHERE MEMBER_ID = '{kode}'")))
                     {
-                        MessageBox.Show("User tidak ditemukan!");
+                        MessageBox.Show("Selamat Datang " + MainWindow.ambilstring($"SELECT REAL_NAME FROM MEMBER WHERE MEMBER_ID = '{kode}'") + " :D");
+                        hw.changeuser(kode);
+                        this.Close();
                     }
                     else
                     {
-                        if(TBPass.Password.Equals(MainWindow.ambilstring($"SELECT PASSWORD FROM MEMBER WHERE MEMBER_ID = '{kode}'")))
-                        {
-                            MessageBox.Show("Selamat Datang " + MainWindow.ambilstring($"SELECT REAL_NAME FROM MEMBER WHERE MEMBER_ID = '{kode}'") + " :D");
-                            hw.changeuser(kode);
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Password Salah");
-                        }
+                        MessageBox.Show("Password Salah");
                     }
                 }
             }
