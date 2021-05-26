@@ -58,7 +58,7 @@ namespace PCS_Gaming
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            //Application.Current.Shutdown();
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)

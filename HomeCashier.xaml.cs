@@ -143,33 +143,25 @@ namespace PCS_Gaming
 
         private void ButtonHome_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            resetgrid();
             GridHome.Visibility = Visibility.Visible;
-            GridMasterGame.Visibility = Visibility.Hidden;
-            GridMasterBundle.Visibility = Visibility.Hidden;
-            GridMasterReport.Visibility = Visibility.Hidden;
         }
 
         private void ButtonMasterGame_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            GridHome.Visibility = Visibility.Hidden;
+            resetgrid();
             GridMasterGame.Visibility = Visibility.Visible;
-            GridMasterBundle.Visibility = Visibility.Hidden;
-            GridMasterReport.Visibility = Visibility.Hidden;
         }
 
         private void ButtonMasterBundle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            GridHome.Visibility = Visibility.Hidden;
-            GridMasterGame.Visibility = Visibility.Hidden;
+            resetgrid();
             GridMasterBundle.Visibility = Visibility.Visible;
-            GridMasterReport.Visibility = Visibility.Hidden;
         }
 
         private void ButtonMasterReport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            GridHome.Visibility = Visibility.Hidden;
-            GridMasterGame.Visibility = Visibility.Hidden;
-            GridMasterBundle.Visibility = Visibility.Hidden;
+            resetgrid();
             GridMasterReport.Visibility = Visibility.Visible;
         }
 
@@ -353,7 +345,7 @@ namespace PCS_Gaming
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     inicart.ItemsSource = dt.AsDataView();
-                    GridHome.Visibility = Visibility.Hidden;
+                    resetgrid();
                     GridCart.Visibility = Visibility.Visible;
                     MessageBox.Show(dt.Rows.Count+"");
                 }
@@ -364,6 +356,15 @@ namespace PCS_Gaming
                 }
                 
             }
+        }
+
+        void resetgrid()
+        {
+            GridHome.Visibility = Visibility.Hidden;
+            GridCart.Visibility = Visibility.Hidden;
+            GridMasterBundle.Visibility = Visibility.Hidden;
+            GridMasterGame.Visibility = Visibility.Hidden;
+            GridMasterReport.Visibility = Visibility.Hidden;
         }
 
         private void ButtonInsert_Click(object sender, RoutedEventArgs e)
