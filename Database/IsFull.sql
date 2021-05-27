@@ -6,6 +6,7 @@ drop table GENRE cascade constraint purge;
 drop table TRANSACTION cascade constraint purge;
 drop table MEMBER cascade constraint purge;
 drop table BUNDLE cascade constraint purge;
+drop table BUNDLE_GAME cascade constraint purge;
 drop table TOKEN_CONTENTS cascade constraint purge;
 drop table GAME_TRANSACTION cascade constraint purge;
 drop table GAME_BUNDLE cascade constraint purge;
@@ -36,7 +37,7 @@ create table GENRE(
 	NAME varchar2(50)
 );
 create table TRANSACTION(
-	TOKEN varchar2(16) primary key,
+	TOKEN varchar2(10) primary key,
 	MEMBER_ID varchar2(5),
 	TRANSACTION_DATE date,
 	TOTAL number
@@ -54,25 +55,90 @@ create table BUNDLE(
 	NAME varchar2(50),
 	PRICE number,
     DISCOUNT number,
-	START_PERIOD date,
-	END_PERIOD date
+	IS_ACTIVE number(1)
 );
+create table BUNDLE_GAME(
+	BUNDLE_ID varchar2(5),
+	GAME_ID varchar2(5)
+);
+-- CONTENT_ID bisa game id atau bundle id
 create table TOKEN_CONTENTS(
 	TOKEN_ID varchar2(10),
-	GAME_ID varchar2(5),
+	CONTENT_ID varchar2(5),
 	QTY number
 );
 create table GAME_TRANSACTION(
 	GAME_ID varchar2(5),
-	TOKEN varchar2(16),
+	TOKEN varchar2(10),
 	PRICE number,
 	QTY number,
 	SUBTOTAL number
 );
-create table GAME_GENRE(
-	GAME_ID varchar2(5),
-	GENRE_ID varchar2(5)
-);
+-- create table GAME_GENRE(
+-- 	GAME_ID varchar2(5),
+-- 	GENRE_ID varchar2(5)
+-- );
+
+-- Function --
+create or replace FUNCTION GENERATE_GAME_ID
+(
+    game_name in varchar2
+)
+return varchar2
+is
+    gameID varchar2(5);
+    spaceIndex number;
+    ctr number;
+begin
+    spaceIndex:=instr(game_name,' ');
+    if spaceIndex > 0 and length(game_name)>spaceIndex then
+        gameID:=substr(game_name,1,1)||substr(game_name,instr(game_name,' ')+1,1);
+    else
+        gameID:=substr(game_name,1,2);
+    end if;
+    gameID:=upper(gameID);
+    select count(GAME_ID) into ctr from GAME where GAME_ID like gameID||'%';
+    gameID:=gameID||lpad(ctr+1,3,'0');
+
+    return gameID;
+end;
+/
+
+-- Trigger --
+create or replace trigger TR_MEMBER_BI
+before insert on MEMBER
+for each row
+declare
+    mem_id MEMBER.MEMBER_ID%type;
+    spaceIndex number;
+    ctr number;
+begin
+    spaceIndex:=instr(:NEW.REAL_NAME,' ');
+    if spaceIndex > 0 then
+        mem_id:=substr(:NEW.REAL_NAME,1,1)||substr(:NEW.REAL_NAME,instr(:NEW.REAL_NAME,' ')+1,1);
+    else
+        mem_id:=substr(:NEW.REAL_NAME,1,2);
+    end if;
+    select count(MEMBER_ID) into ctr from MEMBER where MEMBER_ID like mem_id||'%';
+    :NEW.MEMBER_ID:=upper(mem_id)||lpad(ctr+1,3,'0');
+
+    if :NEW.JOINED_DATE is null then
+        select CURRENT_DATE into :NEW.JOINED_DATE from dual;
+    end if;
+end;
+/
+
+create or replace trigger TR_GAME_TRANSACTION
+before insert on GAME_TRANSACTION
+for each row
+declare
+    ctr number;
+begin
+    select STOCK into ctr from GAME where GAME_ID = :NEW.GAME_ID;
+    ctr := ctr - :NEW.QTY;
+    UPDATE GAME SET STOCK = ctr WHERE GAME_ID = :NEW.GAME_ID;
+end;
+/
 
 -- Insert Data
 insert into DEVELOPER(DEVELOPER_ID, NAME) values('DE001','Moon Studios GmbH');
@@ -137,74 +203,17 @@ insert into GAME(GAME_ID, DEVELOPER_ID, PUBLISHER_ID, GENRE_ID, NAME, RELEASE_DA
 insert into GAME(GAME_ID, DEVELOPER_ID, PUBLISHER_ID, GENRE_ID, NAME, RELEASE_DATE, PRICE, STOCK, IS_ACTIVE_GAME) values('DO001', 'DE010', 'PU010', 'GE009', 'DOOM', TO_DATE('12/05/2016','DD/MM/YYYY'), 266000, 50, 1);
 insert into GAME(GAME_ID, DEVELOPER_ID, PUBLISHER_ID, GENRE_ID, NAME, RELEASE_DATE, PRICE, STOCK, IS_ACTIVE_GAME) values('DE001', 'DE010', 'PU010', 'GE009', 'DOOM Eternal', TO_DATE('20/03/2020','DD/MM/YYYY'), 800000, 50, 1);
 
-insert into GAME_GENRE(GAME_ID, GENRE_ID) values('RD001','GE001');
-insert into GAME_GENRE(GAME_ID, GENRE_ID) values('RD001','GE002');
-insert into GAME_GENRE(GAME_ID, GENRE_ID) values('YK001','GE001');
-insert into GAME_GENRE(GAME_ID, GENRE_ID) values('YK001','GE002');
-
+-- insert into GAME_GENRE(GAME_ID, GENRE_ID) values('RD001','GE001');
+-- insert into GAME_GENRE(GAME_ID, GENRE_ID) values('RD001','GE002');
+-- insert into GAME_GENRE(GAME_ID, GENRE_ID) values('YK001','GE001');
+-- insert into GAME_GENRE(GAME_ID, GENRE_ID) values('YK001','GE002');
 
 insert into MEMBER(REAL_NAME, USERNAME, PASSWORD, BIRTH_DATE, JOINED_DATE) values('Mason Williams', 'mwilliams','freegamespls',TO_DATE('19/08/1999','DD/MM/YYYY'),TO_DATE('07/10/2020','DD/MM/YYYY'));
 insert into MEMBER(REAL_NAME, USERNAME, PASSWORD, BIRTH_DATE) values('Mike Wallace', 'mwallace','yesyesyes',TO_DATE('06/09/1969','DD/MM/YYYY'));
 
+insert into BUNDLE(BUNDLE_ID, NAME, PRICE, DISCOUNT, IS_ACTIVE) values('BDL01', 'Watch Dog Pack', 928000, 30, 1);
+
+insert into BUNDLE_CONTENT(BUNDLE_ID, GAME_ID) values('BDL01', 'FC001');
+insert into BUNDLE_CONTENT(BUNDLE_ID, GAME_ID) values('BDL01', 'FC002');
+
 commit;
-
--- Function --
-create or replace FUNCTION GENERATE_GAME_ID
-(
-    game_name in varchar2
-)
-return varchar2
-is
-    gameID varchar2(5);
-    spaceIndex number;
-    ctr number;
-begin
-    spaceIndex:=instr(game_name,' ');
-    if spaceIndex > 0 and length(game_name)>spaceIndex then
-        gameID:=substr(game_name,1,1)||substr(game_name,instr(game_name,' ')+1,1);
-    else
-        gameID:=substr(game_name,1,2);
-    end if;
-    gameID:=upper(gameID);
-    select count(GAME_ID) into ctr from GAME where GAME_ID like gameID||'%';
-    gameID:=gameID||lpad(ctr+1,3,'0');
-
-    return gameID;
-end;
-/
-
--- Trigger --
-create or replace trigger TR_MEMBER_BI
-before insert on MEMBER
-for each row
-declare
-    mem_id MEMBER.MEMBER_ID%type;
-    spaceIndex number;
-    ctr number;
-begin
-    spaceIndex:=instr(:NEW.REAL_NAME,' ');
-    if spaceIndex > 0 then
-        mem_id:=substr(:NEW.REAL_NAME,1,1)||substr(:NEW.REAL_NAME,instr(:NEW.REAL_NAME,' ')+1,1);
-    else
-        mem_id:=substr(:NEW.REAL_NAME,1,2);
-    end if;
-    select count(MEMBER_ID) into ctr from MEMBER where MEMBER_ID like mem_id||'%';
-    :NEW.MEMBER_ID:=upper(mem_id)||lpad(ctr+1,3,'0');
-
-    if :NEW.JOINED_DATE is null then
-        select CURRENT_DATE into :NEW.JOINED_DATE from dual;
-    end if;
-end;
-/
-
-create or replace trigger TR_GAME_TRANSACTION
-before insert on GAME_TRANSACTION
-for each row
-declare
-    ctr number;
-begin
-    select STOCK into ctr from GAME where GAME_ID = :NEW.GAME_ID;
-    ctr := ctr - :NEW.QTY;
-    UPDATE GAME SET STOCK = ctr WHERE GAME_ID = :NEW.GAME_ID;
-end;
-/
