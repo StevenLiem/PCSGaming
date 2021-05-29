@@ -533,13 +533,19 @@
                             <Button
                                 x:Name="ButtonAddToBundle"
                                 Content="Add"
-                                Width="100"/>
+                                Width="100" Click="ButtonAddToBundle_Click"/>
                         </StackPanel>
                         <GroupBox Header="Bundle Content" Height="290">
                             <ListBox
                                 x:Name="LBBundleGame"
                                 Background="{StaticResource blueishBlack}">
-                                <ListBoxItem Content="Test" Foreground="White"/>
+                                <!--<ListBoxItem Content="Test" Foreground="White"/>-->
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Foreground" Value="White"></Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                
                             </ListBox>
                         </GroupBox>
                         

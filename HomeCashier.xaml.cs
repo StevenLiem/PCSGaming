@@ -25,7 +25,7 @@ namespace PCS_Gaming
     {
         OracleConnection conn;
         DataTable dtGame;
-        List<string> devID, pubID, genID;
+        List<string> devID, pubID, genID, game_id_for_combo, game_id_add_to_bundle;
         string query, selectedID;
         string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
         int selectedStock;
@@ -36,6 +36,7 @@ namespace PCS_Gaming
 
             this.conn = conn;
 
+            game_id_add_to_bundle = new List<string>();
             fillComboBox();
             reloadDG();
         }
@@ -64,6 +65,7 @@ namespace PCS_Gaming
             devID = new List<string>();
             pubID = new List<string>();
             genID = new List<string>();
+            game_id_for_combo = new List<string>();
 
             conn.Open();
 
@@ -94,6 +96,16 @@ namespace PCS_Gaming
             {
                 genID.Add(reader.GetString(0));
                 CBGenre.Items.Add(reader.GetString(1));
+            }
+            reader.Close();
+
+            query = $"select game_id, name from GAME";
+            cmd = new OracleCommand(query, conn);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                game_id_for_combo.Add(reader.GetString(0));
+                CBSelectGame.Items.Add(reader.GetString(1));
             }
             reader.Close();
 
@@ -355,6 +367,24 @@ namespace PCS_Gaming
                     throw;
                 }
                 
+            }
+        }
+
+        private void ButtonAddToBundle_Click(object sender, RoutedEventArgs e)
+        {
+            if(CBSelectGame.SelectedIndex >=0)
+            {
+                ListBoxItem addedGame = new ListBoxItem();
+                addedGame.Content = CBSelectGame.SelectedItem.ToString();
+                LBBundleGame.Items.Add(addedGame);
+                game_id_add_to_bundle.Add(game_id_for_combo[CBSelectGame.SelectedIndex]);
+                //string daftargame;
+                //daftargame = "";
+                //for (int i = 0; i < game_id_add_to_bundle.Count; i++)
+                //{
+                //    daftargame = daftargame + game_id_add_to_bundle[i] + " ";
+                //}
+                //MessageBox.Show(daftargame);
             }
         }
 
