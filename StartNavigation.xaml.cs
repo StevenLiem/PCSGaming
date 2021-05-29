@@ -53,7 +53,7 @@ namespace PCS_Gaming
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
 
         private void ButtonAdmin_Click(object sender, RoutedEventArgs e)

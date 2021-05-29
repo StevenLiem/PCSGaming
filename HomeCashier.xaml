@@ -131,7 +131,7 @@
         <Grid 
             Grid.Row="2"
             x:Name="GridHome"
-            Visibility="Visible"
+            Visibility="Hidden"
             Background="{StaticResource kindaBlack}">
             <TextBlock Style="{StaticResource ChangeOnHover}" FontSize="48" VerticalAlignment="Center" TextAlignment="Center" Text="Insert Token" FontWeight="Bold" Margin="412,207,412,438" Grid.Row="2" Height="75"/>
             <Grid 
@@ -418,8 +418,176 @@
         <Grid 
             Grid.Row="2"
             x:Name="GridMasterBundle"
-            Visibility="Hidden">
+            Visibility="Visible">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="35*"/>
+            </Grid.RowDefinitions>
 
+            <!--Bagian atas-->
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="20">
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
+                                Content="ID"
+                                Foreground="White"
+                                FontSize="16"
+                                Width="100"
+                                Margin="0 10"/>
+                            <TextBox 
+                                x:Name="TBIDBundle"
+                                Foreground="White"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Width="300"
+                                BorderBrush="White"
+                                IsEnabled="False"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
+                                Content="Name"
+                                Foreground="White"
+                                FontSize="16"
+                                Width="100"
+                                Margin="0 10"/>
+                            <TextBox 
+                                x:Name="TBBundleName"
+                                Foreground="White"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Width="300"
+                                BorderBrush="White"
+                                materialDesign:HintAssist.Hint="Insert Bundle Name"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
+                                Content="Discount (%)"
+                                Foreground="White"
+                                FontSize="16"
+                                Width="100"
+                                Margin="0 10"/>
+                            <TextBox 
+                                x:Name="TBDiscount"
+                                Foreground="White"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Width="300"
+                                BorderBrush="White"
+                                materialDesign:HintAssist.Hint="Insert Discount" TextChanged="TBTitle_TextChanged"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label 
+                                Content="Is Active"
+                                Foreground="White"
+                                FontSize="16"
+                                Width="100"
+                                Margin="0 10"/>
+                            <RadioButton
+                                x:Name="rbBundleActive"
+                                Content="Active"
+                                Foreground="White"
+                                FontSize="16"
+                                IsChecked="True"
+                                Width="100"/>
+                            <RadioButton
+                                x:Name="rbBundleInactive"
+                                Content="Inactive"
+                                Foreground="White"
+                                FontSize="16"
+                                Width="100"/>
+                        </StackPanel>
+                        <TextBlock 
+                            x:Name="TBlockTotalPrice"
+                            FontSize="18"
+                            Foreground="White"
+                            Text="Total Price : -"
+                            FontWeight="Bold"
+                            Margin="0 70 0 0"/>
+                        <TextBlock 
+                            x:Name="TBlockPriceAfterDisc"
+                            FontSize="18"
+                            Foreground="White"
+                            Text="Total Price After Discount: -"
+                            FontWeight="Bold"
+                            Margin="0 20"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="20">
+                        <StackPanel Orientation="Horizontal" Margin=" 0 10">
+                            <ComboBox
+                                x:Name="CBSelectGame"
+                                Width="300"
+                                FontSize="16"
+                                Foreground="White"
+                                BorderBrush="White"
+                                
+                                Background="{StaticResource bootstrapDark}">
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Background" Value="{StaticResource bootstrapDark}"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+                            <Button
+                                x:Name="ButtonAddToBundle"
+                                Content="Add"
+                                Width="100"/>
+                        </StackPanel>
+                        <GroupBox Header="Bundle Content" Height="290">
+                            <ListBox
+                                x:Name="LBBundleGame"
+                                Background="{StaticResource blueishBlack}">
+                                <ListBoxItem Content="Test" Foreground="White"/>
+                            </ListBox>
+                        </GroupBox>
+                        
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="350" Margin="20">
+                        <Button
+                            x:Name="ButtonClearBundle"
+                            Width="200"
+                            Margin="0 20"
+                            Content="Clear"/>
+                        <Button
+                            x:Name="ButtonInsertBundle"
+                            Width="200"
+                            Margin="0 20"
+                            Content="Insert"/>
+                        <Button
+                            x:Name="ButtonUpdateBundle"
+                            Width="200"
+                            Margin="0 20"
+                            Content="Update"
+                            IsEnabled="False"/>
+                        <Button
+                            x:Name="ButtonDeleteBundle"
+                            Width="200"
+                            Margin="0 20"
+                            Content="Delete"
+                            IsEnabled="False"/>
+                    </StackPanel>
+                </StackPanel>
+                
+            </Grid>
+            
+            <!--bagian bawah-->
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock 
+                    Text="List Bundle"
+                    FontSize="24"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Margin="20 0"/>
+                    <DataGrid 
+                    x:Name="DGBundle" 
+                    HorizontalAlignment="Stretch"
+                    Height="280"
+                    Margin="20 10" MouseDoubleClick="DGGame_MouseDoubleClick"/>
+                </StackPanel>
+            </Grid>
         </Grid>
         <!--End Grid Master Bundle-->
 
