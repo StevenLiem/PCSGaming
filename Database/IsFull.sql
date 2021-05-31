@@ -213,7 +213,7 @@ insert into MEMBER(REAL_NAME, USERNAME, PASSWORD, BIRTH_DATE) values('Mike Walla
 
 insert into BUNDLE(BUNDLE_ID, NAME, PRICE, DISCOUNT, IS_ACTIVE) values('BDL01', 'Watch Dog Pack', 928000, 30, 1);
 
-insert into BUNDLE_CONTENT(BUNDLE_ID, GAME_ID) values('BDL01', 'FC001');
-insert into BUNDLE_CONTENT(BUNDLE_ID, GAME_ID) values('BDL01', 'FC002');
+insert into BUNDLE_GAME(BUNDLE_ID, GAME_ID) values('BDL01', 'FC001');
+insert into BUNDLE_GAME(BUNDLE_ID, GAME_ID) values('BDL01', 'FC002');
 
 commit;

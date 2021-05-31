@@ -28,7 +28,7 @@ namespace PCS_Gaming
         List<string> devID, pubID, genID, game_id_for_combo, game_id_add_to_bundle;
         string query, selectedID;
         string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
-        int selectedStock;
+        int selectedStock, total, total_discount;
         BitmapImage gambar;
         public HomeCashier(OracleConnection conn)
         {
@@ -37,7 +37,10 @@ namespace PCS_Gaming
             this.conn = conn;
 
             game_id_add_to_bundle = new List<string>();
+            total = 0;
+            total_discount = 0;
             fillComboBox();
+            load_bundle();
             reloadDG();
         }
 
@@ -169,6 +172,7 @@ namespace PCS_Gaming
         {
             resetgrid();
             GridMasterBundle.Visibility = Visibility.Visible;
+            load_bundle();
         }
 
         private void ButtonMasterReport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -370,6 +374,90 @@ namespace PCS_Gaming
             }
         }
 
+        private void load_bundle()
+        {
+            DGBundle.Items.Clear();
+            string gen_id;
+            query = $"select bundle_id as \"Bundle_ID\", name as \"Name\" from BUNDLE";
+
+            conn.Open();
+            OracleDataAdapter dab = new OracleDataAdapter(query, conn);
+            DataTable dtb = new DataTable();
+            dab.Fill(dtb);
+            gen_id = "BDL";
+            if (dtb.Rows.Count >= 9)
+            {
+                gen_id += (dtb.Rows.Count + 1);
+            }
+            else
+            {
+                gen_id += "0" + (dtb.Rows.Count + 1);
+            }
+            DGBundle.ItemsSource = dtb.DefaultView;
+            DGBundle.IsReadOnly = true;
+            conn.Close();
+
+            TBIDBundle.Text = gen_id;
+        }
+
+        private Boolean cek_string(string x)
+        {
+            char[] cr = x.ToCharArray();
+            bool cek = true;
+            for(int i = 0; i < x.Length; i++)
+            {
+                if(cr[i]<48 || cr[i] > 57)
+                {
+                    cek = false;
+                    break;
+                }
+            }
+            return cek;
+        }
+
+
+        private void TBDisc_TextChanged(object sender, RoutedEventArgs e)
+        {
+            if (game_id_add_to_bundle.Count > 0)
+            {
+                total = 0;
+                query = $"select game_id, price from GAME";
+                OracleDataAdapter dag = new OracleDataAdapter(query, conn);
+                DataTable dtg = new DataTable();
+                dag.Fill(dtg);
+                for (int i = 0; i < game_id_add_to_bundle.Count; i++)
+                {
+                    for (int j = 0; j < dtg.Rows.Count; j++)
+                    {
+                        if(dtg.Rows[j].ItemArray[0].ToString() == game_id_add_to_bundle[i])
+                        {
+                            total += Convert.ToInt32(dtg.Rows[j].ItemArray[1].ToString());
+                        }
+                    }
+                }
+                total_discount = total;
+
+                if (TBDiscount.Text != "")
+                {
+                    if (!cek_string(TBDiscount.Text))
+                    {
+                        MessageBox.Show("Invalid Discount Value!");
+                    }
+                    else
+                    {
+                        total_discount = total * (100 - Convert.ToInt32(TBDiscount.Text)) / 100;
+                    }
+                }
+            }
+            else
+            {
+                total = 0;
+                total_discount = 0;
+            }
+            TBlockTotalPrice.Text = "Total Price : Rp. " + total;
+            TBlockPriceAfterDisc.Text = "Total Price After Discount : Rp. " + total_discount;
+        }
+
         private void ButtonAddToBundle_Click(object sender, RoutedEventArgs e)
         {
             if(CBSelectGame.SelectedIndex >=0)
@@ -378,6 +466,37 @@ namespace PCS_Gaming
                 addedGame.Content = CBSelectGame.SelectedItem.ToString();
                 LBBundleGame.Items.Add(addedGame);
                 game_id_add_to_bundle.Add(game_id_for_combo[CBSelectGame.SelectedIndex]);
+
+                total = 0;
+                query = $"select game_id, price from GAME";
+                OracleDataAdapter dag = new OracleDataAdapter(query, conn);
+                DataTable dtg = new DataTable();
+                dag.Fill(dtg);
+                for (int i = 0; i < game_id_add_to_bundle.Count; i++)
+                {
+                    for (int j = 0; j < dtg.Rows.Count; j++)
+                    {
+                        if (dtg.Rows[j].ItemArray[0].ToString() == game_id_add_to_bundle[i])
+                        {
+                            total += Convert.ToInt32(dtg.Rows[j].ItemArray[1].ToString());
+                        }
+                    }
+                }
+                total_discount = total;
+
+                if (TBDiscount.Text != "")
+                {
+                    if (!cek_string(TBDiscount.Text))
+                    {
+                        MessageBox.Show("Invalid Discount Value!");
+                    }
+                    else
+                    {
+                        total_discount = total * (100 - Convert.ToInt32(TBDiscount.Text)) / 100;
+                    }
+                }
+                TBlockTotalPrice.Text = "Total Price : Rp. " + total;
+                TBlockPriceAfterDisc.Text = "Total Price After Discount : Rp. " + total_discount;
                 //string daftargame;
                 //daftargame = "";
                 //for (int i = 0; i < game_id_add_to_bundle.Count; i++)
@@ -386,6 +505,19 @@ namespace PCS_Gaming
                 //}
                 //MessageBox.Show(daftargame);
             }
+        }
+
+        private void ButtonClearBundle_Click(object sender, RoutedEventArgs e)
+        {
+            total = 0;
+            total_discount = 0;
+            TBBundleName.Text = "";
+            TBDiscount.Text = "";
+            TBlockTotalPrice.Text = "Total Price : -";
+            TBlockPriceAfterDisc.Text = "Total Price After Discount : -";
+            CBSelectGame.Text = "";
+            LBBundleGame.Items.Clear();
+            game_id_add_to_bundle.Clear();
         }
 
         void resetgrid()

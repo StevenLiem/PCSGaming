@@ -475,7 +475,7 @@
                                 FontSize="16"
                                 Width="300"
                                 BorderBrush="White"
-                                materialDesign:HintAssist.Hint="Insert Discount" TextChanged="TBTitle_TextChanged"/>
+                                materialDesign:HintAssist.Hint="Insert Discount" TextChanged="TBDisc_TextChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label 
@@ -509,9 +509,9 @@
                             x:Name="TBlockPriceAfterDisc"
                             FontSize="18"
                             Foreground="White"
-                            Text="Total Price After Discount: -"
+                            Text="Total Price After Discount : -"
                             FontWeight="Bold"
-                            Margin="0 20"/>
+                            Margin="0 20 0 0"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="20">
                         <StackPanel Orientation="Horizontal" Margin=" 0 10">
@@ -555,7 +555,8 @@
                             x:Name="ButtonClearBundle"
                             Width="200"
                             Margin="0 20"
-                            Content="Clear"/>
+                            Content="Clear"
+                            Click="ButtonClearBundle_Click"/>
                         <Button
                             x:Name="ButtonInsertBundle"
                             Width="200"
