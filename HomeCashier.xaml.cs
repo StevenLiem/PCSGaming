@@ -30,12 +30,14 @@ namespace PCS_Gaming
         string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
         int selectedStock, total, total_discount;
         BitmapImage gambar;
+        bool switchStateBundleInsert; //false pas lagi insert, true pas lagi update delete
         public HomeCashier(OracleConnection conn)
         {
             InitializeComponent();
 
             this.conn = conn;
 
+            switchStateBundleInsert = false;
             game_id_add_to_bundle = new List<string>();
             total = 0;
             total_discount = 0;
@@ -301,9 +303,8 @@ namespace PCS_Gaming
             TBPrice.Text = "";
             TBStock.Text = "";
 
-            ButtonInsert.IsEnabled = true;
-            ButtonUpdate.IsEnabled = false;
-            ButtonDelete.IsEnabled = false;
+            switchStateBundleInsert = false;
+            switchStateBundle();
             rbActive.IsChecked = true;
             rbInactive.IsChecked = false;
 
@@ -376,7 +377,8 @@ namespace PCS_Gaming
 
         private void load_bundle()
         {
-            DGBundle.Items.Clear();
+            //DGBundle.Items.Clear();
+            DGBundle.ItemsSource = null;
             string gen_id;
             query = $"select bundle_id as \"Bundle_ID\", name as \"Name\" from BUNDLE";
 
@@ -415,6 +417,138 @@ namespace PCS_Gaming
             return cek;
         }
 
+        private void switchStateBundle()
+        {
+            if(switchStateBundleInsert == false)
+            {
+                ButtonInsertBundle.IsEnabled = true;
+                ButtonDeleteBundle.IsEnabled = false;
+                ButtonUpdateBundle.IsEnabled = false;
+            }
+            else
+            {
+                ButtonInsertBundle.IsEnabled = false;
+                ButtonDeleteBundle.IsEnabled = true;
+                ButtonUpdateBundle.IsEnabled = true;
+            }
+            game_id_add_to_bundle.Clear();
+            LBBundleGame.Items.Clear();
+        }
+
+        private void DGBundle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DGBundle.SelectedIndex >= 0)
+            {
+                switchStateBundleInsert = true;
+                switchStateBundle();
+                DataRowView bundleSelect = DGBundle.SelectedItem as DataRowView;
+                string selectedBundleID = bundleSelect.Row.ItemArray[0].ToString();
+                //MessageBox.Show(bundleSelect.Row.ItemArray[0].ToString());
+                query = "select bundle_id, name, price, discount, is_active from bundle where bundle_id='"+selectedBundleID+"'";
+                OracleCommand cmd = new OracleCommand(query, conn);
+                OracleDataReader rd;
+                conn.Open();
+                try
+                {
+                    rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        TBIDBundle.Text = rd.GetString(0);
+                        TBBundleName.Text = rd.GetString(1);
+                        TBDiscount.Text = rd.GetDecimal(3) + "";
+                        if (rd.GetInt32(4) == 1)
+                        {
+                            rbActive.IsChecked = true;
+                            rbInactive.IsChecked = false;
+                        }
+                        else
+                        {
+                            rbActive.IsChecked = false;
+                            rbInactive.IsChecked = true;
+                        }
+                    }
+                    rd.Close();
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    conn.Close();
+                }
+
+                query = "select g.game_id, g.name from bundle_game p, game g where p.bundle_id='" + selectedBundleID + "' and g.game_id = p.game_id";
+                cmd = new OracleCommand(query, conn);
+                conn.Open();
+                try
+                {
+                    rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        ListBoxItem gameDalamBundle = new ListBoxItem();
+                        gameDalamBundle.Content = rd.GetString(1);
+                        LBBundleGame.Items.Add(gameDalamBundle);
+
+                        game_id_add_to_bundle.Add(rd.GetString(0));
+                    }
+                    rd.Close();
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    conn.Close();
+                }
+
+            }
+        }
+
+        private void ButtonUpdateBundle_Click(object sender, RoutedEventArgs e)
+        {
+            if (switchStateBundleInsert == true)
+            {
+
+            }
+        }
+
+        private void ButtonDeleteBundle_Click(object sender, RoutedEventArgs e)
+        {
+            if (switchStateBundleInsert == true)
+            {
+                if (MessageBox.Show("Yakin ingin delete Bundle?", "Warning", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    query = "delete from bundle where bundle_id=:a";
+                    OracleCommand cmd = new OracleCommand(query, conn);
+                    cmd.Parameters.Add(":a", TBIDBundle.Text);
+                    conn.Open();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        conn.Close();
+                    }
+
+                    query = "delete from bundle_game where bundle_id=:a";
+                    cmd = new OracleCommand(query, conn);
+                    cmd.Parameters.Add(":a", TBIDBundle.Text);
+                    conn.Open();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        conn.Close();
+                    }
+                }
+                
+            }
+        }
 
         private void TBDisc_TextChanged(object sender, RoutedEventArgs e)
         {
@@ -518,6 +652,8 @@ namespace PCS_Gaming
             CBSelectGame.Text = "";
             LBBundleGame.Items.Clear();
             game_id_add_to_bundle.Clear();
+            switchStateBundleInsert = false;
+            switchStateBundle();
         }
 
         void resetgrid()

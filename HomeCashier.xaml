@@ -567,13 +567,13 @@
                             Width="200"
                             Margin="0 20"
                             Content="Update"
-                            IsEnabled="False"/>
+                            IsEnabled="False" Click="ButtonUpdateBundle_Click"/>
                         <Button
                             x:Name="ButtonDeleteBundle"
                             Width="200"
                             Margin="0 20"
                             Content="Delete"
-                            IsEnabled="False"/>
+                            IsEnabled="False" Click="ButtonDeleteBundle_Click"/>
                     </StackPanel>
                 </StackPanel>
                 
@@ -592,7 +592,7 @@
                     x:Name="DGBundle" 
                     HorizontalAlignment="Stretch"
                     Height="280"
-                    Margin="20 10" MouseDoubleClick="DGGame_MouseDoubleClick"/>
+                    Margin="20 10" MouseDoubleClick="DGBundle_MouseDoubleClick"/>
                 </StackPanel>
             </Grid>
         </Grid>
