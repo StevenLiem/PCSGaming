@@ -380,7 +380,7 @@ namespace PCS_Gaming
             //DGBundle.Items.Clear();
             DGBundle.ItemsSource = null;
             string gen_id;
-            query = $"select bundle_id as \"Bundle_ID\", name as \"Name\" from BUNDLE";
+            query = $"select bundle_id as \"ID\", name as \"Name\", price as \"Price\", discount as \"Discount\", is_active as \"Is Active\" from BUNDLE";
 
             conn.Open();
             OracleDataAdapter dab = new OracleDataAdapter(query, conn);
@@ -547,6 +547,69 @@ namespace PCS_Gaming
                     }
                 }
                 
+            }
+        }
+
+        private void ButtonInsertBundle_Click(object sender, RoutedEventArgs e)
+        {
+            int disc = 0;
+            if (!string.IsNullOrEmpty(TBBundleName.Text) && !string.IsNullOrEmpty(TBDiscount.Text) && LBBundleGame.Items.Count > 0)
+            {
+                try
+                {
+                    disc = Int32.Parse(TBDiscount.Text);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Invalid Discount Value");
+                }
+                if (disc == 0)
+                {
+                    MessageBox.Show("Invalid Discount Value");
+                }
+                else
+                {
+                    if(LBBundleGame.Items.Count <= 1)
+                    {
+                        MessageBox.Show("Bundle have 2 items at least");
+                    }
+                    else
+                    {
+                        conn.Open();
+                        query = "INSERT INTO BUNDLE(BUNDLE_ID, NAME, PRICE, DISCOUNT, IS_ACTIVE)" +
+                            "VALUES (:ID, :NAME, :PRICE, :DISCOUNT, :ACTIVE)";
+                        OracleCommand cmd = new OracleCommand(query, conn);
+                        try
+                        {
+                            cmd.Parameters.Add(":ID", TBIDBundle.Text);
+                            cmd.Parameters.Add(":NAME", TBBundleName.Text);
+                            cmd.Parameters.Add(":PRICE", total);
+                            cmd.Parameters.Add(":DISCOUNT", TBDiscount.Text);
+                            if (rbBundleActive.IsChecked == true)
+                            {
+                                cmd.Parameters.Add(":IS_ACTIVE", 1);
+                            }
+                            else
+                            {
+                                cmd.Parameters.Add(":IS_ACTIVE", 0);
+                            }
+
+                            cmd.ExecuteNonQuery();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+
+                        conn.Close();
+                        ButtonClearBundle.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        load_bundle();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please fill all the fields");
             }
         }
 

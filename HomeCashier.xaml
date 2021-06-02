@@ -561,7 +561,8 @@
                             x:Name="ButtonInsertBundle"
                             Width="200"
                             Margin="0 20"
-                            Content="Insert"/>
+                            Content="Insert" 
+                            Click="ButtonInsertBundle_Click"/>
                         <Button
                             x:Name="ButtonUpdateBundle"
                             Width="200"
