@@ -445,7 +445,13 @@ namespace PCS_Gaming
             game_id_add_to_bundle.Clear();
             LBBundleGame.Items.Clear();
         }
-
+        //string priceS, discPrice;
+        //priceS = rd.GetDecimal(2) + "";
+        //                discPrice = (rd.GetDecimal(2) * (100 - rd.GetDecimal(3)) / 100) + "";
+        //                MessageBox.Show(priceS);
+        //                TBlockTotalPrice.Text = "Total Price : Rp. " + priceS;
+        //                TBlockPriceAfterDisc.Text = "Total Price After Discount : Rp. " + (rd.GetDecimal(2) * (100 - rd.GetDecimal(3)) / 100) + "";
+                        
         private void DGBundle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (DGBundle.SelectedIndex >= 0)
@@ -455,9 +461,34 @@ namespace PCS_Gaming
                 DataRowView bundleSelect = DGBundle.SelectedItem as DataRowView;
                 string selectedBundleID = bundleSelect.Row.ItemArray[0].ToString();
                 //MessageBox.Show(bundleSelect.Row.ItemArray[0].ToString());
-                query = "select bundle_id, name, price, discount, is_active from bundle where bundle_id='"+selectedBundleID+"'";
+
+                query = "select g.game_id, g.name from bundle_game p, game g where p.bundle_id='" + selectedBundleID + "' and g.game_id = p.game_id";
                 OracleCommand cmd = new OracleCommand(query, conn);
                 OracleDataReader rd;
+                conn.Open();
+                try
+                {
+                    rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        ListBoxItem gameDalamBundle = new ListBoxItem();
+                        gameDalamBundle.Content = rd.GetString(1);
+                        LBBundleGame.Items.Add(gameDalamBundle);
+
+                        game_id_add_to_bundle.Add(rd.GetString(0));
+                    }
+                    rd.Close();
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    conn.Close();
+                }
+
+                query = "select bundle_id, name, price, discount, is_active from bundle where bundle_id='" + selectedBundleID + "'";
+                cmd = new OracleCommand(query, conn);
+
                 conn.Open();
                 try
                 {
@@ -486,30 +517,6 @@ namespace PCS_Gaming
                     MessageBox.Show(ex.Message);
                     conn.Close();
                 }
-
-                query = "select g.game_id, g.name from bundle_game p, game g where p.bundle_id='" + selectedBundleID + "' and g.game_id = p.game_id";
-                cmd = new OracleCommand(query, conn);
-                conn.Open();
-                try
-                {
-                    rd = cmd.ExecuteReader();
-                    while (rd.Read())
-                    {
-                        ListBoxItem gameDalamBundle = new ListBoxItem();
-                        gameDalamBundle.Content = rd.GetString(1);
-                        LBBundleGame.Items.Add(gameDalamBundle);
-
-                        game_id_add_to_bundle.Add(rd.GetString(0));
-                    }
-                    rd.Close();
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    conn.Close();
-                }
-
             }
         }
 
@@ -517,40 +524,93 @@ namespace PCS_Gaming
         {
             if (switchStateBundleInsert == true)
             {
-                //bool valid = checkInputtedData();
+                int disc = 0;
+                if (!string.IsNullOrEmpty(TBBundleName.Text) && !string.IsNullOrEmpty(TBDiscount.Text) && LBBundleGame.Items.Count > 0)
+                {
+                    try
+                    {
+                        disc = Int32.Parse(TBDiscount.Text);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Invalid Discount Value");
+                    }
+                    if (disc == 0)
+                    {
+                        MessageBox.Show("Invalid Discount Value");
+                    }
+                    else
+                    {
+                        if (LBBundleGame.Items.Count <= 1)
+                        {
+                            MessageBox.Show("Bundle have 2 items at least");
+                        }
+                        else
+                        {
+                            conn.Open();
+                            query = $"UPDATE BUNDLE SET NAME = :NAME, PRICE = :PRICE, DISCOUNT = :DISCOUNT, IS_ACTIVE = :ACTIVE WHERE BUNDLE_ID = :ID";
+                            OracleCommand cmd = new OracleCommand(query, conn);
+                            try
+                            {
+                                cmd.Parameters.Add(":NAME", TBBundleName.Text);
+                                cmd.Parameters.Add(":PRICE", total);
+                                cmd.Parameters.Add(":DISCOUNT", TBDiscount.Text);
+                                if (rbBundleActive.IsChecked == true)
+                                {
+                                    cmd.Parameters.Add(":IS_ACTIVE", 1);
+                                }
+                                else
+                                {
+                                    cmd.Parameters.Add(":IS_ACTIVE", 0);
+                                }
+                                cmd.Parameters.Add(":ID", TBIDBundle.Text);
 
-                //if (valid)
-                //{
-                //    conn.Open();
-                //    int active = 0;
-                //    if (rbActive.IsChecked == true)
-                //    {
-                //        active = 1;
-                //    }
-                //    string query = $"update GAME set NAME='{TBTitle.Text}', " +
-                //                   $"PRICE={TBPrice.Text}, STOCK={TBStock.Text}, " +
-                //                   $"DEVELOPER_ID='{devID[CBDeveloper.SelectedIndex]}', " +
-                //                   $"PUBLISHER_ID='{pubID[CBPublisher.SelectedIndex]}', " +
-                //                   $"GENRE_ID='{genID[CBGenre.SelectedIndex]}', " +
-                //                   $"IS_ACTIVE_GAME={active} where GAME_ID='{selectedID}'";
-                //    OracleCommand cmd = new OracleCommand(query, conn);
-                //    try
-                //    {
-                //        cmd.ExecuteNonQuery();
-                //        if (gambar != null)
-                //        {
-                //            saveimage(TBIDGame.Text);
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        MessageBox.Show(ex.Message);
-                //    }
-                //    conn.Close();
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
 
-                //    ButtonClear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                //    reloadDG();
-                //}
+                            query = $"DELETE FROM BUNDLE_GAME WHERE BUNDLE_ID = :BID";
+                            OracleCommand cmdD = new OracleCommand(query, conn);
+                            try
+                            {
+                                cmdD.Parameters.Add(":BID", TBIDBundle.Text);
+                                cmdD.ExecuteNonQuery();
+                            }
+                            catch(Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+
+                            for (int i = 0; i < LBBundleGame.Items.Count; i++)
+                            {
+                                query = $"INSERT INTO BUNDLE_GAME (BUNDLE_ID, GAME_ID)" +
+                                    $"VALUES (:BUNDLE_ID, :GAME_ID)";
+                                OracleCommand cmdB = new OracleCommand(query, conn);
+                                try
+                                {
+                                    cmdB.Parameters.Add(":BUNDLE_ID", TBIDBundle.Text);
+                                    cmdB.Parameters.Add(":GAME_ID", game_id_add_to_bundle[i]);
+                                    cmdB.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
+
+                            conn.Close();
+                            ButtonClearBundle.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                            load_bundle();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please fill all the fields");
+                }
             }
         }
 
