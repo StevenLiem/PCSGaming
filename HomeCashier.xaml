@@ -131,7 +131,7 @@
         <Grid 
             Grid.Row="2"
             x:Name="GridHome"
-            Visibility="Hidden"
+            Visibility="Visible"
             Background="{StaticResource kindaBlack}">
             <TextBlock Style="{StaticResource ChangeOnHover}" FontSize="48" VerticalAlignment="Center" TextAlignment="Center" Text="Insert Token" FontWeight="Bold" Margin="412,207,412,438" Grid.Row="2" Height="75"/>
             <Grid 
@@ -408,7 +408,7 @@
                     x:Name="DGGame" 
                     HorizontalAlignment="Stretch"
                     Height="280"
-                    Margin="20 10" MouseDoubleClick="DGGame_MouseDoubleClick"/>
+                    Margin="20 10" MouseDoubleClick="DGGame_MouseDoubleClick" CurrentCellChanged="DGGame_CurrentCellChanged"/>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -418,7 +418,7 @@
         <Grid 
             Grid.Row="2"
             x:Name="GridMasterBundle"
-            Visibility="Visible">
+            Visibility="Hidden">
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*"/>

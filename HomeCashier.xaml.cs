@@ -24,6 +24,7 @@ namespace PCS_Gaming
     public partial class HomeCashier : Window
     {
         OracleConnection conn;
+        DataSet dsGame;
         DataTable dtGame;
         List<string> devID, pubID, genID, game_id_for_combo, game_id_add_to_bundle;
         string query, selectedID;
@@ -31,6 +32,8 @@ namespace PCS_Gaming
         int selectedStock, total, total_discount;
         BitmapImage gambar;
         bool switchStateBundleInsert; //false pas lagi insert, true pas lagi update delete
+        OracleDataAdapter da_untukDGGame;
+        OracleCommandBuilder build;
         public HomeCashier(OracleConnection conn)
         {
             InitializeComponent();
@@ -55,11 +58,19 @@ namespace PCS_Gaming
                     $"PRICE as \"Price\", STOCK as \"Stock\", IS_ACTIVE_GAME as \"Is Active\" from GAME g";
 
             conn.Open();
-            OracleDataAdapter da = new OracleDataAdapter(query, conn);
-            dtGame = new DataTable();
-            da.Fill(dtGame);
+            da_untukDGGame = new OracleDataAdapter(query, conn);
+            build = new OracleCommandBuilder(da_untukDGGame);
+
+            dsGame = new DataSet();
+            da_untukDGGame.Fill(dsGame, "GAME");
+
+            dtGame = dsGame.Tables["GAME"];
+
+            dtGame.Columns["ID"].Unique = true;
+
+            //da.Fill(dtGame);
             DGGame.ItemsSource = dtGame.DefaultView;
-            DGGame.IsReadOnly = true;
+            DGGame.IsReadOnly = false;
             imagePreview.Source = null;
             conn.Close();
         }
@@ -661,6 +672,15 @@ namespace PCS_Gaming
             {
                 MessageBox.Show("Please fill all the fields");
             }
+        }
+
+        
+
+        private void DGGame_CurrentCellChanged(object sender, EventArgs e)
+        {
+            conn.Open();
+            da_untukDGGame.Update(dsGame, "GAME");
+            conn.Close();
         }
 
         private void TBDisc_TextChanged(object sender, RoutedEventArgs e)
