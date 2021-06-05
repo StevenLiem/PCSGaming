@@ -65,6 +65,7 @@ create table BUNDLE_GAME(
 create table TOKEN_CONTENTS(
 	TOKEN_ID varchar2(10),
 	CONTENT_ID varchar2(5),
+	MEMBER_ID varchar(5),
 	QTY number
 );
 create table GAME_TRANSACTION(

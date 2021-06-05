@@ -369,13 +369,22 @@ namespace PCS_Gaming
                 tokhen.Text = tokhen.Text.Trim(' ');
                 try
                 {
-                    OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as \"NO.\",g.NAME,g.PRICE,t.QTY FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.GAME_ID = g.GAME_ID", conn);
+                    OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as \"NO.\",g.NAME,g.PRICE,t.QTY,g.STOCK, CASE WHEN t.QTY>g.STOCK THEN 1 ELSE 0 END as \"STATUS\" FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.CONTENT_ID = g.GAME_ID", conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     inicart.ItemsSource = dt.AsDataView();
                     resetgrid();
                     GridCart.Visibility = Visibility.Visible;
-                    MessageBox.Show(dt.Rows.Count+"");
+                    //inicart.Columns[4].Visibility = Visibility.Hidden;
+                    //for (int i = 0; i < dt.Rows.Count; i++)
+                    //{
+                    //    DataRow row = dt.Rows[i];
+                    //    if(Convert.ToInt32(row[3].ToString()) > Convert.ToInt32(row[4].ToString()))
+                    //    {
+                    //        MessageBox.Show("Stock tidak cukup");
+                    //    }
+                    //}
+                    //MessageBox.Show(dt.Rows.Count+"");
                 }
                 catch (Exception ex)
                 {

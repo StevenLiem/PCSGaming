@@ -336,7 +336,15 @@ namespace PCS_Gaming
                 //com.ExecuteNonQuery();
                 foreach (CartItem a in userCart)
                 {
-                    com = new OracleCommand($"INSERT INTO TOKEN_CONTENTS VALUES ('{token}','{a.getKode()}','{a.getJumlah()}')", conn);
+                    if (currentuser.Length > 0)
+                    {
+                        com = new OracleCommand($"INSERT INTO TOKEN_CONTENTS VALUES ('{token}','{a.getKode()}','{currentuser}','{a.getJumlah()}')", conn);
+                    }
+                    else
+                    {
+                        com = new OracleCommand($"INSERT INTO TOKEN_CONTENTS VALUES ('{token}','{a.getKode()}',NULL,'{a.getJumlah()}')", conn);
+                    }
+                    
                     com.ExecuteNonQuery();
                 }
                 conn.Close();
