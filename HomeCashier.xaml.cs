@@ -445,13 +445,7 @@ namespace PCS_Gaming
             game_id_add_to_bundle.Clear();
             LBBundleGame.Items.Clear();
         }
-        //string priceS, discPrice;
-        //priceS = rd.GetDecimal(2) + "";
-        //                discPrice = (rd.GetDecimal(2) * (100 - rd.GetDecimal(3)) / 100) + "";
-        //                MessageBox.Show(priceS);
-        //                TBlockTotalPrice.Text = "Total Price : Rp. " + priceS;
-        //                TBlockPriceAfterDisc.Text = "Total Price After Discount : Rp. " + (rd.GetDecimal(2) * (100 - rd.GetDecimal(3)) / 100) + "";
-                        
+        
         private void DGBundle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (DGBundle.SelectedIndex >= 0)
@@ -741,6 +735,23 @@ namespace PCS_Gaming
             conn.Open();
             da_untukDGGame.Update(dsGame, "GAME");
             conn.Close();
+        }
+
+        private void LBBundleGame_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            int bdl = LBBundleGame.SelectedIndex;
+            if(bdl >= 0)
+            {
+                //Lihat Data
+                //MessageBox.Show("ID : " + game_id_add_to_bundle[bdl] + "\nName : " + LBBundleGame.Items[bdl].ToString());
+                //Delete Per Game
+                MessageBoxResult result = MessageBox.Show("Are you sure to delete " + LBBundleGame.Items[bdl] + " from bundle?", "Confirmation", MessageBoxButton.YesNo);
+                if(result == MessageBoxResult.Yes)
+                { 
+                    game_id_add_to_bundle.RemoveAt(bdl);
+                    LBBundleGame.Items.RemoveAt(bdl);
+                }
+            }
         }
 
         private void TBDisc_TextChanged(object sender, RoutedEventArgs e)

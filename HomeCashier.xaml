@@ -418,7 +418,7 @@
         <Grid 
             Grid.Row="2"
             x:Name="GridMasterBundle"
-            Visibility="Hidden">
+            Visibility="Visible">
             
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*"/>
@@ -538,7 +538,8 @@
                         <GroupBox Header="Bundle Content" Height="290">
                             <ListBox
                                 x:Name="LBBundleGame"
-                                Background="{StaticResource blueishBlack}">
+                                Background="{StaticResource blueishBlack}"
+                                MouseDoubleClick="LBBundleGame_MouseDoubleClick">
                                 <!--<ListBoxItem Content="Test" Foreground="White"/>-->
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
