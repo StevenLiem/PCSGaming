@@ -34,6 +34,8 @@ namespace PCS_Gaming
         bool switchStateBundleInsert; //false pas lagi insert, true pas lagi update delete
         OracleDataAdapter da_untukDGGame;
         OracleCommandBuilder build;
+        DataTable dt_tokenCart;
+        string tokenIdTemp;
         public HomeCashier(OracleConnection conn)
         {
             InitializeComponent();
@@ -354,7 +356,15 @@ namespace PCS_Gaming
         {
             if(e.Key == Key.Return && !tokhen.Text.Trim(' ').Equals(""))
             {
-                showgames();
+                if(tokenPernahDipakai(tokhen.Text) == false)
+                {
+                    showgames();
+                }
+                else
+                {
+                    MessageBox.Show("Token pernah dipakai");
+                }
+                
             }
         }
 
@@ -369,22 +379,13 @@ namespace PCS_Gaming
                 tokhen.Text = tokhen.Text.Trim(' ');
                 try
                 {
-                    OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as \"NO.\",g.NAME,g.PRICE,t.QTY,g.STOCK, CASE WHEN t.QTY>g.STOCK THEN 1 ELSE 0 END as \"STATUS\" FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.CONTENT_ID = g.GAME_ID", conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    inicart.ItemsSource = dt.AsDataView();
+                    OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as NO,g.NAME,g.PRICE,t.QTY,g.STOCK, CASE WHEN t.QTY>g.STOCK THEN 'Stock Unavailable' ELSE 'Stock Available' END as \"STATUS\" FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.CONTENT_ID = g.GAME_ID", conn);
+                    dt_tokenCart = new DataTable();
+                    da.Fill(dt_tokenCart);
+                    inicart.ItemsSource = dt_tokenCart.AsDataView();
                     resetgrid();
                     GridCart.Visibility = Visibility.Visible;
-                    //inicart.Columns[4].Visibility = Visibility.Hidden;
-                    //for (int i = 0; i < dt.Rows.Count; i++)
-                    //{
-                    //    DataRow row = dt.Rows[i];
-                    //    if(Convert.ToInt32(row[3].ToString()) > Convert.ToInt32(row[4].ToString()))
-                    //    {
-                    //        MessageBox.Show("Stock tidak cukup");
-                    //    }
-                    //}
-                    //MessageBox.Show(dt.Rows.Count+"");
+                    tokenIdTemp = tokhen.Text;
                 }
                 catch (Exception ex)
                 {
@@ -760,6 +761,61 @@ namespace PCS_Gaming
                     game_id_add_to_bundle.RemoveAt(bdl);
                     LBBundleGame.Items.RemoveAt(bdl);
                 }
+            }
+        }
+
+        private bool adaStockUnavailable()
+        {
+            bool adaKah = false;
+            for (int i = 0; i < dt_tokenCart.Rows.Count; i++)
+            {
+                if(dt_tokenCart.Rows[i].ItemArray[5].ToString() == "Stock Unavailable")
+                {
+                    adaKah = true;
+                }
+            }
+            return adaKah;
+
+        }
+        private bool tokenPernahDipakai(string token)
+        {
+            OracleCommand cmd = new OracleCommand("select count(*) from transaction where token='"+token+"'", conn);
+            conn.Open();
+            int jumlahTokenDiTransaksi = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+            conn.Close();
+            if (jumlahTokenDiTransaksi > 0)
+                return true;
+            else
+                return false;
+        }
+
+        private void BtnConfirmPayment_Click(object sender, RoutedEventArgs e)
+        {
+            if(adaStockUnavailable() == false)
+            {
+                OracleCommand cmd = new OracleCommand("select sum(g.price * t.qty) from token_contents t, game g where token_id='"+tokenIdTemp+"' and g.game_id=t.content_id", conn);
+                conn.Open();
+                int total = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+                MessageBox.Show("Stock tersedia");
+                OracleTransaction transactionGame;
+                conn.Open();
+                transactionGame = conn.BeginTransaction();
+
+                try
+                {
+                    cmd = new OracleCommand("", conn);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    conn.Close();
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("Stock tidak tersedia");
             }
         }
 
