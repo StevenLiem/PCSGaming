@@ -793,24 +793,51 @@ namespace PCS_Gaming
         {
             if(adaStockUnavailable() == false)
             {
-                OracleCommand cmd = new OracleCommand("select sum(g.price * t.qty) from token_contents t, game g where token_id='"+tokenIdTemp+"' and g.game_id=t.content_id", conn);
+                OracleDataAdapter da;
+                DataTable dtBuatInsert = new DataTable();
                 conn.Open();
-                int total = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                OracleCommand cmd = new OracleCommand("select nvl(t.member_id, 'NO MEMBER'), sum(g.price * t.qty) from token_contents t, game g where token_id='"+tokenIdTemp+"' and g.game_id=t.content_id group by t.member_id", conn);
+                OracleDataReader reader = cmd.ExecuteReader();
+                
+                int total=0;
+                string id_member_transaksi="";
+                while (reader.Read())
+                {
+                    id_member_transaksi = reader.GetString(0).ToString();
+                    total = Convert.ToInt32(reader.GetDecimal(1));
+                }
 
                 MessageBox.Show("Stock tersedia");
                 OracleTransaction transactionGame;
-                conn.Open();
                 transactionGame = conn.BeginTransaction();
 
                 try
                 {
-                    cmd = new OracleCommand("", conn);
+                    //insert ke TRANSACTION
+                    cmd = new OracleCommand($"insert into transaction values('{tokenIdTemp}','{id_member_transaksi}',SYSDATE,{total})", conn);
+                    cmd.ExecuteNonQuery();
+
+                    //insert ke GAME_TRANSACTION
+                    da = new OracleDataAdapter($"select t.content_id, g.price, t.qty, g.price*t.qty as SUBTOTAL from token_contents t, game g where token_id='{tokenIdTemp}' and g.game_id=t.content_id", conn);
+                    da.Fill(dtBuatInsert);
+                    for (int i = 0; i < dtBuatInsert.Rows.Count; i++)
+                    {
+                        DataRow rowGame = dtBuatInsert.Rows[i];
+                        cmd = new OracleCommand($"insert into game_transaction values('{rowGame.ItemArray[0]}','{tokenIdTemp}',{rowGame.ItemArray[1]},{rowGame.ItemArray[2]},{rowGame.ItemArray[3]})", conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                    MessageBox.Show("Transaction success!");
+                    transactionGame.Commit();
+                    conn.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                    transactionGame.Rollback();
                     conn.Close();
                 }
+                GridCart.Visibility = Visibility.Hidden;
+                GridHome.Visibility = Visibility.Visible;
                 
             }
             else
