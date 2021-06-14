@@ -21,11 +21,15 @@ namespace PCS_Gaming
     public partial class StartNavigation : Window
     {
         OracleConnection conn;
-        public StartNavigation(OracleConnection conn)
+        string dataSource, dataUsername, dataPass;
+        public StartNavigation(OracleConnection conn, string dataSource, string dataUsername, string dataPass)
         {
             InitializeComponent();
 
             this.conn = conn;
+            this.dataSource = dataSource;
+            this.dataUsername = dataUsername;
+            this.dataPass = dataPass;
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -58,7 +62,7 @@ namespace PCS_Gaming
 
         private void ButtonAdmin_Click(object sender, RoutedEventArgs e)
         {
-            HomeCashier home = new HomeCashier(conn);
+            HomeCashier home = new HomeCashier(conn, dataSource, dataUsername, dataPass);
             home.ShowDialog();
         }
 

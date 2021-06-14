@@ -22,10 +22,24 @@ namespace PCS_Gaming
     {
         OracleConnection conn;
         StrukBelanja belanja;
-        public WindowStrukBelanja(OracleConnection conn)
+        string dataSource, dataUsername, dataPass, token;
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ReportStrukBelanja.Owner = Window.GetWindow(this);
+        }
+
+        public WindowStrukBelanja(OracleConnection conn, string dataSource, string dataUsername, string dataPass, string token)
         {
             InitializeComponent();
             this.conn = conn;
+            this.dataSource = dataSource;
+            this.dataUsername = dataUsername;
+            this.dataPass = dataPass;
+            belanja = new StrukBelanja();
+            belanja.SetDatabaseLogon(dataUsername, dataPass, dataSource,"");
+            belanja.SetParameterValue("ParamTokenTransaksi", token);
+            ReportStrukBelanja.ViewerCore.ReportSource = belanja;
         }
     }
 }

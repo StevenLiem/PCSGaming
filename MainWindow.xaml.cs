@@ -70,7 +70,7 @@ namespace PCS_Gaming
             {
                 conn.Open();
                 conn.Close();
-                StartNavigation nav = new StartNavigation(conn);
+                StartNavigation nav = new StartNavigation(conn, dataSource, user, pass);
                 this.Hide();
                 nav.ShowDialog();
             }

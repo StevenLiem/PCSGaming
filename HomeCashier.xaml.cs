@@ -36,11 +36,15 @@ namespace PCS_Gaming
         OracleCommandBuilder build;
         DataTable dt_tokenCart;
         string tokenIdTemp;
-        public HomeCashier(OracleConnection conn)
+        string dataSource, dataUsername, dataPass;
+        public HomeCashier(OracleConnection conn, string dataSource, string dataUsername, string dataPass)
         {
             InitializeComponent();
 
             this.conn = conn;
+            this.dataSource = dataSource;
+            this.dataUsername = dataUsername;
+            this.dataPass = dataPass;
 
             switchStateBundleInsert = false;
             game_id_add_to_bundle = new List<string>();
@@ -795,6 +799,7 @@ namespace PCS_Gaming
             {
                 OracleDataAdapter da;
                 DataTable dtBuatInsert = new DataTable();
+                bool transactionSuccess = false;
                 conn.Open();
                 OracleCommand cmd = new OracleCommand("select nvl(t.member_id, 'NO MEMBER'), sum(g.price * t.qty) from token_contents t, game g where token_id='"+tokenIdTemp+"' and g.game_id=t.content_id group by t.member_id", conn);
                 OracleDataReader reader = cmd.ExecuteReader();
@@ -827,9 +832,10 @@ namespace PCS_Gaming
                         cmd.ExecuteNonQuery();
                     }
                     MessageBox.Show("Transaction success!");
-                    WindowStrukBelanja strukBelanja = new WindowStrukBelanja(conn);
+                    
                     transactionGame.Commit();
                     conn.Close();
+                    transactionSuccess = true;
                 }
                 catch (Exception ex)
                 {
@@ -837,6 +843,12 @@ namespace PCS_Gaming
                     transactionGame.Rollback();
                     conn.Close();
                 }
+                if (transactionSuccess == true)
+                {
+                    WindowStrukBelanja strukBelanja = new WindowStrukBelanja(conn, dataSource, dataUsername, dataPass, tokenIdTemp);
+                    strukBelanja.ShowDialog();
+                }
+                
                 GridCart.Visibility = Visibility.Hidden;
                 GridHome.Visibility = Visibility.Visible;
                 

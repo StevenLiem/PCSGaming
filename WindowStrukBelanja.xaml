@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:PCS_Gaming"
         xmlns:Viewer="clr-namespace:SAPBusinessObjects.WPF.Viewer;assembly=SAPBusinessObjects.WPF.Viewer" x:Class="PCS_Gaming.WindowStrukBelanja"
         mc:Ignorable="d"
-        Title="WindowStrukBelanja" Height="450" Width="800">
+        Title="WindowStrukBelanja" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
 
-        <Viewer:CrystalReportsViewer x:Name="ReportStrukBelanja" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="794" Margin="0,0,-0.4,0"/>
+        <Viewer:CrystalReportsViewer x:Name="ReportStrukBelanja" Margin="0,0,-0.4,0"/>
 
     </Grid>
 </Window>
