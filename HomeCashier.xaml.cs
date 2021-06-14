@@ -827,6 +827,7 @@ namespace PCS_Gaming
                         cmd.ExecuteNonQuery();
                     }
                     MessageBox.Show("Transaction success!");
+                    WindowStrukBelanja strukBelanja = new WindowStrukBelanja(conn);
                     transactionGame.Commit();
                     conn.Close();
                 }

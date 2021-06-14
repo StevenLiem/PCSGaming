@@ -51,9 +51,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\app\steve\product\11.2.0\dbhome_2\ODP.NET\bin\2.x\Oracle.DataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
+    <Reference Include="sapbusinessobjects.wpf.viewer, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="SAPBusinessObjects.WPF.ViewerShared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -86,6 +92,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StrukBelanja.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowStrukBelanja.xaml.cs">
+      <DependentUpon>WindowStrukBelanja.xaml</DependentUpon>
     </Compile>
     <Page Include="HomeCashier.xaml">
       <SubType>Designer</SubType>
@@ -127,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StartNavigation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowStrukBelanja.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
