@@ -93,6 +93,15 @@
       <DependentUpon>StrukBelanja.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TransaksiReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TransaksiReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowReportTransaksi.xaml.cs">
+      <DependentUpon>WindowReportTransaksi.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowStrukBelanja.xaml.cs">
       <DependentUpon>WindowStrukBelanja.xaml</DependentUpon>
     </Compile>
@@ -139,6 +148,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="WindowReportTransaksi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowStrukBelanja.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -165,6 +178,10 @@
     <EmbeddedResource Include="StrukBelanja.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StrukBelanja.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransaksiReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TransaksiReport.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

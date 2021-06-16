@@ -781,6 +781,15 @@ namespace PCS_Gaming
             return adaKah;
 
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(startDate.SelectedDate.Value!=null && endDate.SelectedDate.Value != null)
+            {
+
+            }
+        }
+
         private bool tokenPernahDipakai(string token)
         {
             OracleCommand cmd = new OracleCommand("select count(*) from transaction where token='"+token+"'", conn);
@@ -819,7 +828,15 @@ namespace PCS_Gaming
                 try
                 {
                     //insert ke TRANSACTION
-                    cmd = new OracleCommand($"insert into transaction values('{tokenIdTemp}','{id_member_transaksi}',SYSDATE,{total})", conn);
+                    if(id_member_transaksi!="NO MEMBER")
+                    {
+                        cmd = new OracleCommand($"insert into transaction values('{tokenIdTemp}','{id_member_transaksi}',SYSDATE,{total})", conn);
+                    }
+                    else
+                    {
+                        cmd = new OracleCommand($"insert into transaction values('{tokenIdTemp}',null,SYSDATE,{total})", conn);
+                    }
+                    
                     cmd.ExecuteNonQuery();
 
                     //insert ke GAME_TRANSACTION
@@ -845,6 +862,7 @@ namespace PCS_Gaming
                 }
                 if (transactionSuccess == true)
                 {
+                    MessageBox.Show(tokenIdTemp);
                     WindowStrukBelanja strukBelanja = new WindowStrukBelanja(conn, dataSource, dataUsername, dataPass, tokenIdTemp);
                     strukBelanja.ShowDialog();
                 }
