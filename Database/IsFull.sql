@@ -9,7 +9,8 @@ drop table BUNDLE cascade constraint purge;
 drop table BUNDLE_GAME cascade constraint purge;
 drop table TOKEN_CONTENTS cascade constraint purge;
 drop table GAME_TRANSACTION cascade constraint purge;
-drop table GAME_BUNDLE cascade constraint purge;
+drop table BUNDLE_TRANSACTION cascade constraint purge;
+--drop table GAME_BUNDLE cascade constraint purge;
 
 -- Create Table
 create table GAME(
