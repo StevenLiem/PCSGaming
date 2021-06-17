@@ -24,6 +24,7 @@ namespace PCS_Gaming
         TransaksiReport repTransaksi;
         string dataSource, dataUsername, dataPass;
         DateTime start, end;
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ReportTransaksi.Owner = Window.GetWindow(this);

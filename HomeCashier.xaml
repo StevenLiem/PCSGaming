@@ -619,7 +619,8 @@
             Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="4*"></RowDefinition>
             </Grid.RowDefinitions>
 
             <DockPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left">
@@ -628,6 +629,7 @@
                 <DatePicker
                   Name="startDate"
                   Width="200"
+                  FontSize="20"
                   materialDesign:HintAssist.Hint="Pick Date"
                   Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                   Foreground="white"/>
@@ -636,11 +638,25 @@
                 <DatePicker
                   Name="endDate"
                   Width="200"
+                  FontSize="20"
                   materialDesign:HintAssist.Hint="Pick Date"
                   Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                   Foreground="White"/>
             </DockPanel>
             <Button Grid.Column="0" Grid.Row="0" Width="200px" Height="50" HorizontalAlignment="Right" Margin="100 0" Click="Button_Click">Show</Button>
+
+            <DockPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left">
+                <TextBlock VerticalAlignment="Center" Foreground="White" FontSize="20px" Margin="25 10">Member ID:</TextBlock>
+                <TextBox
+                  Name="tbMemberId"
+                  materialDesign:HintAssist.Hint="Type member ID here"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                  VerticalAlignment="Center" 
+                  FontSize="20"
+                  Width="300px"
+                  Foreground="White"/>
+            </DockPanel>
+            <Button Grid.Column="0" Grid.Row="1" Width="200px" Height="50" HorizontalAlignment="Right" Margin="100 0" Click="Button_Click_1">Show</Button>
 
         </Grid>
         

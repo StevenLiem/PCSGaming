@@ -794,6 +794,15 @@ namespace PCS_Gaming
             }
         }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(tbMemberId.Text) == false)
+            {
+                WindowReportMember reportWindowMember = new WindowReportMember(conn, dataSource, dataUsername, dataPass, tbMemberId.Text);
+                reportWindowMember.ShowDialog();
+            }
+        }
+
         private bool tokenPernahDipakai(string token)
         {
             OracleCommand cmd = new OracleCommand("select count(*) from transaction where token='"+token+"'", conn);

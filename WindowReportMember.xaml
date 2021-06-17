@@ -4,12 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PCS_Gaming"
-        xmlns:Viewer="clr-namespace:SAPBusinessObjects.WPF.Viewer;assembly=SAPBusinessObjects.WPF.Viewer" x:Class="PCS_Gaming.WindowReportTransaksi"
+        xmlns:Viewer="clr-namespace:SAPBusinessObjects.WPF.Viewer;assembly=SAPBusinessObjects.WPF.Viewer" x:Class="PCS_Gaming.WindowReportMember"
         mc:Ignorable="d"
-        Title="WindowReportTransaksi" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="WindowReportMember" Height="450" Width="800">
     <Grid>
-
-        <Viewer:CrystalReportsViewer Name="ReportTransaksi" Margin="0,0,-0.4,0"/>
-
+        <Viewer:CrystalReportsViewer Name="ReportMember" Margin="0,0,-0.4,0" Loaded="ReportMember_Loaded"/>
     </Grid>
 </Window>
