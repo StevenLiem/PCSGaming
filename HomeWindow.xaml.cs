@@ -25,7 +25,7 @@ namespace PCS_Gaming
         OracleConnection conn;
         string currentuser = "", currentgame = "";
         string imageFolderPath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 10) + "Images\\";
-        DataTable dt;
+        DataTable dt, dtBundleList;
         int subtotal;
         List<CartItem> userCart;
         List<string> searchResultKodeGame;
@@ -82,6 +82,7 @@ namespace PCS_Gaming
                     TBlMember.Text = "Guest";
                     userCart = new List<CartItem>();
                     updateDGCart();
+                    btnBund.Visibility = Visibility.Hidden;
                 }
             }
             
@@ -231,6 +232,7 @@ namespace PCS_Gaming
             greta.Visibility = Visibility.Hidden;
             gretc.Visibility = Visibility.Hidden;
             gretd.Visibility = Visibility.Hidden;
+            grete.Visibility = Visibility.Hidden;
         }
 
         private void BtnHome_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -241,6 +243,7 @@ namespace PCS_Gaming
                 gretb.Visibility = Visibility.Hidden;
                 gretc.Visibility = Visibility.Hidden;
                 gretd.Visibility = Visibility.Hidden;
+                grete.Visibility = Visibility.Hidden;
                 //generateview();
             }
         }
@@ -261,6 +264,7 @@ namespace PCS_Gaming
                 gretb.Visibility = Visibility.Hidden;
                 gretc.Visibility = Visibility.Visible;
                 gretd.Visibility = Visibility.Hidden;
+                grete.Visibility = Visibility.Hidden;
             }
         }
 
@@ -369,6 +373,10 @@ namespace PCS_Gaming
                 {
                     gretc.Visibility = Visibility.Hidden;
                 }
+                if (grete.Visibility == Visibility.Visible)
+                {
+                    grete.Visibility = Visibility.Hidden;
+                }
                 gretd.Visibility = Visibility.Visible;
 
                 searchResultKodeGame.Clear();
@@ -444,6 +452,82 @@ namespace PCS_Gaming
             greta.Visibility = Visibility.Hidden;
             gretc.Visibility = Visibility.Hidden;
             gretd.Visibility = Visibility.Hidden;
+            grete.Visibility = Visibility.Hidden;
+        }
+
+        private void BtnAddBundle_Click(object sender, RoutedEventArgs e)
+        {
+            int indexgame = -1;
+            for (int i = 0; i < userCart.Count; i++)
+            {
+                if (dtBundleList.Rows[bundleGrid.SelectedIndex].ItemArray[0].ToString().Equals(userCart[i].getKode()))
+                {
+                    indexgame = i;
+                }
+            }
+            if (indexgame >= 0)
+            {
+                userCart[indexgame].setAmount(1);
+                MessageBox.Show("Bundle hanya bisa beli 1 tiap transaksi!");
+                //updateDGCart();
+                //greta.Visibility = Visibility.Visible;
+                //gretb.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                MessageBox.Show(dtBundleList.Rows[bundleGrid.SelectedIndex].ItemArray[0].ToString());
+                userCart.Add(new CartItem(dtBundleList.Rows[bundleGrid.SelectedIndex].ItemArray[0].ToString(), 1));
+                MessageBox.Show("Berhasil Masuk Cart :D");
+                updateDGCart();
+                greta.Visibility = Visibility.Visible;
+                gretb.Visibility = Visibility.Hidden;
+                grete.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void BtnBund_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            dtBundleList = new DataTable();
+            dtBundleList.Columns.Add("Kode");
+            dtBundleList.Columns.Add("Name");
+            dtBundleList.Columns.Add("Price");
+            dtBundleList.Columns.Add("Discount");
+
+            OracleCommand cmd = new OracleCommand("select * from bundle where is_active=1", conn);
+            conn.Open();
+            OracleDataReader rd = cmd.ExecuteReader();
+
+            try
+            {
+                while (rd.Read())
+                {
+                    DataRow tambah = dtBundleList.NewRow();
+                    tambah["Kode"] = rd.GetString(0);
+                    tambah["Name"] = rd.GetString(1);
+                    tambah["Price"] = rd.GetDecimal(2);
+                    tambah["Discount"] = rd.GetDecimal(3);
+
+                    dtBundleList.Rows.Add(tambah);
+                }
+                bundleGrid.ItemsSource = null;
+                bundleGrid.ItemsSource = dtBundleList.DefaultView;
+                bundleGrid.Columns[0].Visibility = Visibility.Hidden;
+                bundleGrid.IsReadOnly = true;
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                conn.Close();
+            }
+
+            grete.Visibility = Visibility.Visible;
+            greta.Visibility = Visibility.Hidden;
+            gretb.Visibility = Visibility.Hidden;
+            gretc.Visibility = Visibility.Hidden;
+            gretd.Visibility = Visibility.Hidden;
+
+
         }
 
         private void addgame_Click(object sender, RoutedEventArgs e)

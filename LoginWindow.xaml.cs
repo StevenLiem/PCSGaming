@@ -76,6 +76,7 @@ namespace PCS_Gaming
                     {
                         MessageBox.Show("Selamat Datang " + MainWindow.ambilstring($"SELECT REAL_NAME FROM MEMBER WHERE MEMBER_ID = '{kode}'") + " :D");
                         hw.changeuser(kode);
+                        hw.btnBund.Visibility = Visibility.Visible;
                         this.Close();
                     }
                     else

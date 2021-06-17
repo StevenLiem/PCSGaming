@@ -383,7 +383,10 @@ namespace PCS_Gaming
                 tokhen.Text = tokhen.Text.Trim(' ');
                 try
                 {
-                    OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as NO,g.NAME,g.PRICE,t.QTY,g.STOCK, CASE WHEN t.QTY>g.STOCK THEN 'Stock Unavailable' ELSE 'Stock Available' END as \"STATUS\" FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.CONTENT_ID = g.GAME_ID", conn);
+                    OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as NO,g.NAME,g.PRICE,t.QTY,TO_CHAR(g.STOCK), CASE WHEN t.QTY>g.STOCK THEN 'Stock Unavailable' ELSE 'Stock Available' END as \"STATUS\" FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.CONTENT_ID = g.GAME_ID UNION " +
+                        $"SELECT ROWNUM as NO,b.NAME,b.PRICE,t.QTY, 'N/A' as STOCK, CASE WHEN ( select min(g.stock) from game g, bundle bs, bundle_game s where bs.bundle_id=s.bundle_id and g.game_id=s.game_id and bs.bundle_id=b.bundle_id)=0 then 'Stock Unavailable' ELSE 'Stock Available' END as \"STATUS\" " +
+                        $"FROM TOKEN_CONTENTS t, BUNDLE b WHERE TOKEN_ID='{tokhen.Text}' and t.CONTENT_ID = b.BUNDLE_ID", conn);
+                    //OracleDataAdapter da = new OracleDataAdapter($"SELECT ROWNUM as NO,g.NAME,g.PRICE,t.QTY,g.STOCK, CASE WHEN t.QTY>g.STOCK THEN 'Stock Unavailable' ELSE 'Stock Available' END as \"STATUS\" FROM TOKEN_CONTENTS t, GAME g WHERE TOKEN_ID='{tokhen.Text}' and t.CONTENT_ID = g.GAME_ID", conn);
                     dt_tokenCart = new DataTable();
                     da.Fill(dt_tokenCart);
                     inicart.ItemsSource = dt_tokenCart.AsDataView();
@@ -786,7 +789,8 @@ namespace PCS_Gaming
         {
             if(startDate.SelectedDate.Value!=null && endDate.SelectedDate.Value != null)
             {
-
+                WindowReportTransaksi reportWindowTransaksi = new WindowReportTransaksi(conn, dataSource,dataUsername,dataPass,startDate.SelectedDate.Value, endDate.SelectedDate.Value);
+                reportWindowTransaksi.ShowDialog();
             }
         }
 
@@ -810,7 +814,8 @@ namespace PCS_Gaming
                 DataTable dtBuatInsert = new DataTable();
                 bool transactionSuccess = false;
                 conn.Open();
-                OracleCommand cmd = new OracleCommand("select nvl(t.member_id, 'NO MEMBER'), sum(g.price * t.qty) from token_contents t, game g where token_id='"+tokenIdTemp+"' and g.game_id=t.content_id group by t.member_id", conn);
+                OracleCommand cmd = new OracleCommand("select nvl(t.member_id, 'NO MEMBER'), sum(g.price * t.qty) from token_contents t, game g where token_id='"+tokenIdTemp+ "' and g.game_id=t.content_id group by t.member_id union select nvl(t.member_id, 'NO MEMBER'), sum(b.price * t.qty * (100-b.discount)/100) from token_contents t, bundle b where token_id='" + tokenIdTemp + "' and b.bundle_id=t.content_id group by t.member_id", conn);
+                //OracleCommand cmd = new OracleCommand("select nvl(t.member_id, 'NO MEMBER'), sum(b.price * t.qty * (100-b.discount)/100) from token_contents t, bundle b where token_id='" + tokenIdTemp + "' and b.bundle_id=t.content_id group by t.member_id", conn);
                 OracleDataReader reader = cmd.ExecuteReader();
                 
                 int total=0;
@@ -818,7 +823,7 @@ namespace PCS_Gaming
                 while (reader.Read())
                 {
                     id_member_transaksi = reader.GetString(0).ToString();
-                    total = Convert.ToInt32(reader.GetDecimal(1));
+                    total += Convert.ToInt32(reader.GetDecimal(1));
                 }
 
                 MessageBox.Show("Stock tersedia");
@@ -840,12 +845,21 @@ namespace PCS_Gaming
                     cmd.ExecuteNonQuery();
 
                     //insert ke GAME_TRANSACTION
-                    da = new OracleDataAdapter($"select t.content_id, g.price, t.qty, g.price*t.qty as SUBTOTAL from token_contents t, game g where token_id='{tokenIdTemp}' and g.game_id=t.content_id", conn);
+                    da = new OracleDataAdapter($"select t.content_id, g.price, t.qty, g.price*t.qty as SUBTOTAL from token_contents t, game g where token_id='{tokenIdTemp}' and g.game_id=t.content_id union select t.content_id, b.price, t.qty, b.price*t.qty*(100-discount)/100 as SUBTOTAL from token_contents t, bundle b where token_id='{tokenIdTemp}' and b.bundle_id=t.content_id", conn);
+                    //da = new OracleDataAdapter($"select t.content_id, g.price, t.qty, g.price*t.qty as SUBTOTAL from token_contents t, bundle b where token_id='{tokenIdTemp}' and b.bundle_id=t.content_id", conn);
                     da.Fill(dtBuatInsert);
                     for (int i = 0; i < dtBuatInsert.Rows.Count; i++)
                     {
                         DataRow rowGame = dtBuatInsert.Rows[i];
-                        cmd = new OracleCommand($"insert into game_transaction values('{rowGame.ItemArray[0]}','{tokenIdTemp}',{rowGame.ItemArray[1]},{rowGame.ItemArray[2]},{rowGame.ItemArray[3]})", conn);
+                        if (!rowGame.ItemArray[0].ToString().Contains("BDL"))
+                        {
+                            cmd = new OracleCommand($"insert into game_transaction values('{rowGame.ItemArray[0]}','{tokenIdTemp}',{rowGame.ItemArray[1]},{rowGame.ItemArray[2]},{rowGame.ItemArray[3]})", conn);
+                        }
+                        else
+                        {
+                            cmd = new OracleCommand($"insert into bundle_transaction values('{rowGame.ItemArray[0]}','{tokenIdTemp}',{rowGame.ItemArray[1]},{rowGame.ItemArray[2]},{rowGame.ItemArray[3]})", conn);
+                        }
+                        
                         cmd.ExecuteNonQuery();
                     }
                     MessageBox.Show("Transaction success!");

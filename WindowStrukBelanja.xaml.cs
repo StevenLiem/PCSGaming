@@ -36,6 +36,7 @@ namespace PCS_Gaming
             this.dataSource = dataSource;
             this.dataUsername = dataUsername;
             this.dataPass = dataPass;
+            this.token = token;
             belanja = new StrukBelanja();
             belanja.SetDatabaseLogon(dataUsername, dataPass, dataSource,"");
             belanja.SetParameterValue("ParamTokenTransaksi", token);

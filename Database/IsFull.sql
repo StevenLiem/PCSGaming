@@ -75,6 +75,14 @@ create table GAME_TRANSACTION(
 	QTY number,
 	SUBTOTAL number
 );
+create table BUNDLE_TRANSACTION(
+    BUNDLE_ID varchar2(5),
+    TOKEN varchar2(10),
+    PRICE number,
+    QTY number,
+    SUBTOTAL number
+);
+
 -- create table GAME_GENRE(
 -- 	GAME_ID varchar2(5),
 -- 	GENRE_ID varchar2(5)
@@ -138,6 +146,28 @@ begin
     select STOCK into ctr from GAME where GAME_ID = :NEW.GAME_ID;
     ctr := ctr - :NEW.QTY;
     UPDATE GAME SET STOCK = ctr WHERE GAME_ID = :NEW.GAME_ID;
+end;
+/
+
+create or replace trigger TR_BUNDLE_TRANSACTION
+before insert on BUNDLE_TRANSACTION
+for each row
+declare
+    ctr number;
+    err EXCEPTION;
+begin
+    for i in (select GAME_ID as "EA" from BUNDLE_GAME where BUNDLE_ID = :NEW.BUNDLE_ID)
+    loop
+        select STOCK into ctr from GAME where GAME_ID = i.EA;
+        ctr := ctr - :NEW.QTY;
+        if(ctr < 0) then
+            raise err;
+        end if;
+        UPDATE GAME SET STOCK = ctr WHERE GAME_ID = i.EA;
+    end loop;
+EXCEPTION
+    WHEN err THEN
+    raise_application_error (-20001,'Ada game yang kekurangan stok');
 end;
 /
 

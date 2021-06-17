@@ -17,8 +17,17 @@ namespace PCS_Gaming
         {
             this.kodeGame = kodeGame;
             this.amount = amount;
-            this.namaGame = MainWindow.ambilstring($"SELECT NAME FROM GAME WHERE GAME_ID ='{kodeGame}'");
-            this.hargaGame = Int32.Parse(MainWindow.ambilstring($"SELECT PRICE FROM GAME WHERE GAME_ID ='{kodeGame}'"));
+            if (!kodeGame.Contains("BDL"))
+            {
+                this.namaGame = MainWindow.ambilstring($"SELECT NAME FROM GAME WHERE GAME_ID ='{kodeGame}'");
+                this.hargaGame = Int32.Parse(MainWindow.ambilstring($"SELECT PRICE FROM GAME WHERE GAME_ID ='{kodeGame}'"));
+            }
+            else
+            {
+                this.namaGame = MainWindow.ambilstring($"SELECT NAME FROM BUNDLE WHERE BUNDLE_ID ='{kodeGame}'");
+                this.hargaGame = Int32.Parse(MainWindow.ambilstring($"SELECT PRICE * ((100-DISCOUNT)/100) FROM BUNDLE WHERE BUNDLE_ID ='{kodeGame}'"));
+            }
+            
         }
 
         public string getKode()

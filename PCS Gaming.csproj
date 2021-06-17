@@ -93,6 +93,18 @@
       <DependentUpon>StrukBelanja.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="StrukBundle.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StrukBundle.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="StrukGame.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StrukGame.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TransaksiReport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -178,6 +190,14 @@
     <EmbeddedResource Include="StrukBelanja.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>StrukBelanja.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StrukBundle.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>StrukBundle.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StrukGame.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>StrukGame.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TransaksiReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

@@ -624,9 +624,21 @@
 
             <DockPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left">
                 <TextBlock VerticalAlignment="Center" Foreground="White" FontSize="20px" Margin="25 10">Start date:</TextBlock>
-                <DatePicker Name="startDate" Width="200 px" Height="25px"></DatePicker>
+                <!--<DatePicker Name="startDate" Width="200 px" Height="25px"></DatePicker>-->
+                <DatePicker
+                  Name="startDate"
+                  Width="200"
+                  materialDesign:HintAssist.Hint="Pick Date"
+                  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                  Foreground="white"/>
                 <TextBlock VerticalAlignment="Center" Margin="200 10 25 10" Foreground="White" FontSize="20px">End date:</TextBlock>
-                <DatePicker Name="endDate" Width="200px" Height="25px" Margin="0" HorizontalAlignment="Left"></DatePicker>
+                <!--<DatePicker Name="endDate" Width="200px" Height="25px" Margin="0" HorizontalAlignment="Left"></DatePicker>-->
+                <DatePicker
+                  Name="endDate"
+                  Width="200"
+                  materialDesign:HintAssist.Hint="Pick Date"
+                  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                  Foreground="White"/>
             </DockPanel>
             <Button Grid.Column="0" Grid.Row="0" Width="200px" Height="50" HorizontalAlignment="Right" Margin="100 0" Click="Button_Click">Show</Button>
 
